@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
@@ -15,7 +16,7 @@ import java.util.Objects;
 @Builder
 @Data
 @NoArgsConstructor
-public class Role extends BaseEntityWithUpdater{
+public class Role extends BaseEntityWithUpdater implements Serializable {
 
   @Column(length = 40, nullable = false, unique = true)
   private String name;

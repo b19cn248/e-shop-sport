@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: hieu
+    password: 1234
+    url: jdbc:mysql://localhost:33062/shopme?allowPublicKeyRetrieval=true
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+server:
+  servlet:
+    context-path: /ShopSportServer
+  port: 8888

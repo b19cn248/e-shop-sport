@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
@@ -12,7 +13,7 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends BaseEntityWithUpdater {
+public class User extends BaseEntityWithUpdater implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
