@@ -8,6 +8,7 @@ import com.shopsport.server.service.UserService;
 import com.shopsport.server.utils.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -38,6 +39,47 @@ public class UserController {
 
     model.addAttribute("users", users);
 
+    return listByPage(1, model, "firstName", "asc", null);
+  }
+
+  @GetMapping("/users/page/{pageNum}")
+  public String listByPage(
+        @PathVariable(name = "pageNum") int pageNum,
+        Model model,
+        @Param("sortField") String sortField,
+        @Param("sortDir") String sortDir,
+        @Param("keyword") String keyword
+  ) {
+    log.info("(listAll) pageNum:{}", pageNum);
+    log.info("Sort Field: {}", sortField);
+    log.info("Sort Dir: {}", sortDir);
+
+    List<User> users = userService.list(pageNum, USER_PER_PAGE, sortField, sortDir, keyword);
+    log.info("(listByPage) users: {}", users);
+
+    int totalItems = (Objects.isNull(keyword)) ? userService.count() : userService.countByKeyword(keyword);
+    long startCount = (long) (pageNum - 1) * USER_PER_PAGE + 1;
+    long endCount = startCount + USER_PER_PAGE - 1;
+
+    if (endCount > totalItems) {
+      endCount = totalItems;
+    }
+
+    int totalPages = (totalItems % USER_PER_PAGE == 0) ? totalItems / USER_PER_PAGE : totalItems / USER_PER_PAGE + 1;
+
+    String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+
+    model.addAttribute("startCount", startCount);
+    model.addAttribute("totalPages", totalPages);
+    model.addAttribute("currentPage", pageNum);
+    model.addAttribute("endCount", endCount);
+    model.addAttribute("totalItems", totalItems);
+    model.addAttribute("users", users);
+    model.addAttribute("sortField", sortField);
+    model.addAttribute("sortDir", sortDir);
+    model.addAttribute("reverseSortDir", reverseSortDir);
+    model.addAttribute("keyword", keyword);
+
     return "users";
   }
 
@@ -54,6 +96,7 @@ public class UserController {
     model.addAttribute("pageTitle", CREATE_NEW_USER);
     return "user_form";
   }
+
 
   @GetMapping("/users/edit/{id}")
   public String editUser(
@@ -79,6 +122,18 @@ public class UserController {
     }
   }
 
+  @GetMapping("/users/delete/{id}")
+  public String delete(
+        @PathVariable Integer id,
+        Model model
+  ) {
+    userService.delete(id);
+
+    model.addAttribute("message", "Delete user successfully");
+
+    return USERS_URL;
+  }
+
   @PostMapping("/users/save")
   public String create(User user, RedirectAttributes redirectAttributes,
                        @RequestParam("image") MultipartFile multipartFile) throws IOException {
@@ -95,9 +150,8 @@ public class UserController {
       FileUploadUtil.cleanDir(uploadDir);
 
       FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-    }
-    else {
-      if (user.getPassword().isEmpty()) user.setPhotos(null);
+    } else {
+      if (user.getPhotos().isEmpty()) user.setPhotos(null);
       userService.create(user);
     }
 

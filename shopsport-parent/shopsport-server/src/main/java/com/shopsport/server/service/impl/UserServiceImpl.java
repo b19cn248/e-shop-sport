@@ -6,6 +6,9 @@ import com.shopsport.server.repository.UserRepository;
 import com.shopsport.server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -53,9 +56,13 @@ public class UserServiceImpl implements UserService {
       } else {
         encodedPassword(user);
       }
+      user.setRole(existingUser.getRole());
     } else {
+      log.info("Create new user");
       encodedPassword(user);
     }
+
+    log.info("(user) user:{}", user);
 
     return repository.save(user);
   }
@@ -70,6 +77,39 @@ public class UserServiceImpl implements UserService {
           && repository.findById(id).orElseThrow().getEmail().equals(email)) return true;
 
     return !repository.existsByEmail(email);
+  }
+
+  @Override
+  public List<User> list(int page, int size, String sortField, String sortDir, String keyword) {
+    log.info("(list) page:{}, size:{}, sortField:{}, sortDir:{}, keyword:{}", page, size, sortField, sortDir, keyword);
+
+    log.info("(list) page:{}, size:{}", page, size);
+
+    Sort sort = Sort.by(sortField);
+
+    sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+
+    Pageable pageable = PageRequest.of(page -1 , size, sort);
+
+    return (Objects.nonNull(keyword)) ? repository.listByKeyword(keyword, pageable) : repository.list(pageable);
+  }
+
+  @Override
+  public int count() {
+    log.info("(count)");
+    return repository.countUser();
+  }
+
+  @Override
+  public void delete(Integer id) {
+    log.info("(delete) id:{}", id);
+    repository.softDelete(id);
+  }
+
+  @Override
+  public int countByKeyword(String keyword) {
+    log.info("(countByKeyword) keyword:{}", keyword);
+    return repository.countByKeyword(keyword);
   }
 
   private void encodedPassword(User user) {

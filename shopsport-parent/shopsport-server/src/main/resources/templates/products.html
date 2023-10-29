@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="us"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+>
 <head th:replace="~{fragments :: page_head('Users - Shopme Admin')}"></head>
 <body>
 <div class="container-fluid">
@@ -8,7 +8,7 @@
     <div th:replace="~{navigation :: menu}"></div>
 
     <div>
-        <h2>Manage Users</h2>
+        <h2>Quản lý sản phẩm</h2>
         <a th:href="@{/users/new}" class="fa-solid fa-user-plus fa-2x icon-dark mr-2"></a>
         <a th:href="@{/users/export/csv}" class="fa-solid fa-file-csv fa-2x icon-dark mr-2"></a>
         <a th:href="@{/users/export/excel}" class="fa-solid fa-file-excel fa-2x icon-dark mr-2"></a>
@@ -37,7 +37,6 @@
     </div>
 
     <div>
-        <h1 class="text-center mb-4">Quản lý sản phẩm</h1>
         <table class="table table-bordered table-striped table-hover table-responsive-xl">
             <thead>
             <tr>
@@ -64,40 +63,17 @@
                     <button class="btn btn-danger">Xóa</button>
                 </td>
             </tr>
-            <tr>
-                <td>SP01</td>
-                <td>Giày thể thao nam</td>
-                <td>300,000 VND</td>
-                <td>10</td>
-                <td>10</td>
-                <td>10</td>
+
+            <tr th:each="product: ${products}">
+                <td>[[${product.id}]]</td>
+                <td>[[${product.name}]]</td>
+                <td>[[${product.importPrice}]]</td>
+                <td>[[${product.quantity}]]</td>
+                <td>[[${product.quantity}]]</td>
+                <td>[[${product.quantity}]]</td>
                 <td>
                     <button class="btn btn-warning">Chỉnh sửa</button>
                     <button class="btn btn-danger">Xóa</button>
-                </td>
-            </tr>
-            <tr>
-                <td>SP01</td>
-                <td>Bóng đá nam</td>
-                <td>200,000 VND</td>
-                <td>10</td>
-                <td>10</td>
-                <td>10</td>
-                <td>
-                    <button class="btn btn-warning">Chỉnh sửa</button>
-                    <button class="btn btn-danger">Xóa</button>
-                </td>
-            </tr>
-            <tr>
-                <td>SP01</td>
-                <td>Vợt cầu lông</td>
-                <td>200,000 VND</td>
-                <td>10</td>
-                <td>10</td>
-                <td>10</td>
-                <td>
-                    <button class="btn btn-warning">Chỉnh sửa</button>
-                    <button class="btn btn-danger link-delete" onclick="test()">Xóa</button>
                 </td>
             </tr>
             </tbody>

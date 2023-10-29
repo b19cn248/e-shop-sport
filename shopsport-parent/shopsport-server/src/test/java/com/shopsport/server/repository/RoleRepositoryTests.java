@@ -1,7 +1,6 @@
-package com.shopsport.server.role;
+package com.shopsport.server.repository;
 
 import com.shopsport.common.entity.Role;
-import com.shopsport.server.repository.RoleRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import java.util.List;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Rollback(value = false)
-public class RepositoryTests {
+public class RoleRepositoryTests {
 
   @Autowired
   private RoleRepository roleRepository;

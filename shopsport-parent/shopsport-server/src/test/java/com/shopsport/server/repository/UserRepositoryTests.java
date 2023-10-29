@@ -1,4 +1,4 @@
-package com.shopsport.server.user;
+package com.shopsport.server.repository;
 
 import com.shopsport.common.entity.Role;
 import com.shopsport.common.entity.User;

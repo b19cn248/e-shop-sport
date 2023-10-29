@@ -39,8 +39,8 @@ public class User extends BaseEntityWithUpdater implements Serializable {
   @Column(name = "is_deleted")
   private boolean isDeleted;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "role_id", referencedColumnName = "id")
+  @ManyToOne
+  @JoinColumn(name = "role_id", nullable = false)
   private Role role;
 
   public User(String email, String password, String firstName, String lastName) {

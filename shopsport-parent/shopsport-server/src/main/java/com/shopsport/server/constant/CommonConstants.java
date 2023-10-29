@@ -30,6 +30,22 @@ public class CommonConstants {
 
   }
 
+  public static class CategoryConstants {
+    private CategoryConstants() {
+
+    }
+
+    public static final String CATEGORY_FORM = "categories/category_form";
+
+    public static final String CATEGORIES_IMAGES = "shopsport-parent/category-images/";
+
+    public static final String SAVED_CATEGORY_SUCCESSFULLY = "The category has been saved successfully.";
+
+    public static final String CATEGORY_URL = "redirect:/categories";
+
+    public static final String CATEGORY_PAGE_TITLE = "Add new Category";
+  }
+
   public static class CommonMessage {
     private CommonMessage() {
     }
