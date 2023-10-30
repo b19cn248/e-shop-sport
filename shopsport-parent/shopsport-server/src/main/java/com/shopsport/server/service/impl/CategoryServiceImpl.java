@@ -18,22 +18,7 @@ public class CategoryServiceImpl implements CategoryService {
   @Override
   public List<Category> list() {
     log.info("List All Categories");
-    return listCategoriesUsedInForm();
-  }
-
-  @Override
-  public List<Category> listCategoriesUsedInForm() {
-    log.info("List Categories Used in Form");
-
-    List<Category> categoriesUsedInForm = new ArrayList<>();
-
-    for (Category category : repository.getRootCategories()) {
-
-      categoriesUsedInForm.add(category);
-      addChildren(categoriesUsedInForm, category, 0);
-    }
-
-    return categoriesUsedInForm;
+    return listCategoriesUsedInTable();
   }
 
   @Override
@@ -54,12 +39,54 @@ public class CategoryServiceImpl implements CategoryService {
     return repository.findById(id).orElseThrow();
   }
 
+  @Override
+  public List<Category> listCategoriesUsedInForm() {
+    log.info("List Categories Used in Form");
+
+    List<Category> categoriesUsedInForm = new ArrayList<>();
+
+    for (Category category : repository.getRootCategories()) {
+
+      categoriesUsedInForm.add(category);
+      addChildren(categoriesUsedInForm, category, 0);
+    }
+
+    return categoriesUsedInForm;
+  }
+
+  @Override
+  public List<Category> listCategoriesUsedInTable() {
+    log.info("List Categories Used in Table");
+
+    List<Category> categoriesUsedInForm = new ArrayList<>();
+
+    for (Category category : repository.getRootCategories()) {
+
+      categoriesUsedInForm.add(category);
+      addChildrenInTable(categoriesUsedInForm, category, 0);
+    }
+
+    return categoriesUsedInForm;
+  }
+
+
   private void addChildren(List<Category> categories, Category parent, int subLevel) {
     int newSubLevel = subLevel + 1;
     for (Category subCategory : parent.getChildren()) {
       if (!subCategory.isDeleted()) {
-        subCategory.setName(createIndentedName(subCategory.getName(), newSubLevel));
-        categories.add(subCategory);
+        String name = createIndentedName(subCategory.getName(), newSubLevel);
+        categories.add(Category.copyIdAndName(subCategory.getId(), name));
+      }
+      addChildren(categories, subCategory, newSubLevel);
+    }
+  }
+
+  private void addChildrenInTable(List<Category> categories, Category parent, int subLevel) {
+    int newSubLevel = subLevel + 1;
+    for (Category subCategory : parent.getChildren()) {
+      if (!subCategory.isDeleted()) {
+        String name = createIndentedName(subCategory.getName(), newSubLevel);
+        categories.add(Category.copyFull(subCategory, name));
       }
       addChildren(categories, subCategory, newSubLevel);
     }

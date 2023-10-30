@@ -4,6 +4,7 @@ import com.shopsport.common.entity.Category;
 import com.shopsport.server.service.CategoryService;
 import com.shopsport.server.utils.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -22,6 +23,7 @@ import static com.shopsport.server.constant.CommonConstants.UserConstants.MESSAG
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class CategoryController {
 
   private final CategoryService service;
@@ -46,16 +48,19 @@ public class CategoryController {
                              @RequestParam("fileImage") MultipartFile multipartFile,
                              RedirectAttributes ra) throws IOException {
 
-    String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-    category.setImage(fileName);
+    if (!multipartFile.isEmpty()) {
+      String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+      category.setImage(fileName);
 
-    Category savedCategory = service.save(category);
-    System.out.println(savedCategory.getImage());
-    System.out.println(category.getImagePath());
-    String uploadDir = CATEGORIES_IMAGES + savedCategory.getId() ;
-    FileUploadUtil.cleanDir(uploadDir);
-    System.out.println(uploadDir);
-    FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+      Category savedCategory = service.save(category);
+      String uploadDir = CATEGORIES_IMAGES + savedCategory.getId();
+      FileUploadUtil.cleanDir(uploadDir);
+      FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+    } else {
+      if (category.getImage().isEmpty()) category.setImage(null);
+      service.save(category);
+    }
+
 
     ra.addFlashAttribute(MESSAGE, SAVED_CATEGORY_SUCCESSFULLY);
     return CATEGORY_URL;
@@ -66,9 +71,13 @@ public class CategoryController {
         @PathVariable Integer id,
         Model model
   ) {
-    model.addAttribute("category", service.get(id));
-    System.out.println(service.get(id).getName());
+    Category category = service.get(id);
+    log.info("category : {}", category);
+    model.addAttribute("category", category);
+
     model.addAttribute("categories", service.listCategoriesUsedInForm());
+
+    log.info("category : {}", category);
     return "categories/category_form";
 
   }
@@ -77,9 +86,7 @@ public class CategoryController {
   public String save(@PathVariable Integer id, Model model) {
 
     model.addAttribute(MESSAGE, "Delete category successfully");
-
     service.remove(id);
-
     return CATEGORY_URL;
   }
 

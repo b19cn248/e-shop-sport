@@ -9,6 +9,8 @@ public interface CategoryService {
 
   List<Category> listCategoriesUsedInForm();
 
+  List<Category> listCategoriesUsedInTable();
+
   Category save(Category category);
 
   void remove(Integer id);

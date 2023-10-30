@@ -37,7 +37,7 @@ public class CommonConstants {
 
     public static final String CATEGORY_FORM = "categories/category_form";
 
-    public static final String CATEGORIES_IMAGES = "shopsport-parent/category-images/";
+    public static final String CATEGORIES_IMAGES = "category-images/";
 
     public static final String SAVED_CATEGORY_SUCCESSFULLY = "The category has been saved successfully.";
 
