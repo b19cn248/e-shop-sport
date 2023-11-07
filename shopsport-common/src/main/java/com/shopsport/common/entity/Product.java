@@ -2,6 +2,7 @@ package com.shopsport.common.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,6 +25,7 @@ public class Product extends BaseEntityWithUpdater {
   private Integer importPrice;
   private Integer exportPrice;
   private Integer quantity;
+  private String image;
 
   public Product(Integer id, String code, String name, String unit, String warehouseId, String origin, String description, Integer importPrice, Integer exportPrice, Integer quantity) {
     super.setId(id);
@@ -36,5 +38,10 @@ public class Product extends BaseEntityWithUpdater {
     this.importPrice = importPrice;
     this.exportPrice = exportPrice;
     this.quantity = quantity;
+  }
+
+  @Transient
+  public String getImagePath() {
+    return "/images/" + this.image;
   }
 }

@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.shopsport.server.constant.CommonConstants.CategoryConstants.*;
+import static com.shopsport.server.constant.CommonConstants.UserConstants.EDIT_USER;
 import static com.shopsport.server.constant.CommonConstants.UserConstants.MESSAGE;
 
 @Controller
@@ -75,9 +76,10 @@ public class CategoryController {
     log.info("category : {}", category);
     model.addAttribute("category", category);
 
+    model.addAttribute("pageTitle", EDIT_CATEGORY + id);
+
     model.addAttribute("categories", service.listCategoriesUsedInForm());
 
-    log.info("category : {}", category);
     return "categories/category_form";
 
   }

@@ -27,4 +27,12 @@ class ProductRepositoryTests {
 
     productRepository.saveAll(List.of(product1, product2, product3, product4, product5));
   }
+
+  @Test
+  void createProduct() {
+    Product product1 = new Product(6, "P006", "Mu dep vaizz lozzz",
+          "Cai", "W01", "USA", "Mu nay di danh goft thi tuyet con me no voi", 1000, 1200, 50);
+
+    productRepository.save(product1);
+  }
 }

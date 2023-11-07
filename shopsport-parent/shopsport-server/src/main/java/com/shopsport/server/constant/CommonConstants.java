@@ -44,6 +44,8 @@ public class CommonConstants {
     public static final String CATEGORY_URL = "redirect:/categories";
 
     public static final String CATEGORY_PAGE_TITLE = "Add new Category";
+
+    public static final String EDIT_CATEGORY = "Edit category with ID ";
   }
 
   public static class CommonMessage {
