@@ -13,6 +13,7 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseEntityWithUpdater implements Serializable {
 
   @Id

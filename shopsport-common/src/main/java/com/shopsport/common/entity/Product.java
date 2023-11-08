@@ -1,8 +1,6 @@
 package com.shopsport.common.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,7 +17,6 @@ public class Product extends BaseEntityWithUpdater {
   private String code;
   private String name;
   private String unit;
-  private String warehouseId;
   private String origin;
   private String description;
   private Integer importPrice;
@@ -27,12 +24,19 @@ public class Product extends BaseEntityWithUpdater {
   private Integer quantity;
   private String image;
 
-  public Product(Integer id, String code, String name, String unit, String warehouseId, String origin, String description, Integer importPrice, Integer exportPrice, Integer quantity) {
+  @ManyToOne
+  @JoinColumn(name = "category_id")
+  private Category category;
+
+  @ManyToOne
+  @JoinColumn(name = "warehouse_id")
+  private Warehouse warehouse;
+
+  public Product(Integer id, String code, String name, String unit, String origin, String description, Integer importPrice, Integer exportPrice, Integer quantity) {
     super.setId(id);
     this.code = code;
     this.name = name;
     this.unit = unit;
-    this.warehouseId = warehouseId;
     this.origin = origin;
     this.description = description;
     this.importPrice = importPrice;
@@ -43,5 +47,10 @@ public class Product extends BaseEntityWithUpdater {
   @Transient
   public String getImagePath() {
     return "/images/" + this.image;
+  }
+
+  @Transient
+  public String getDesc() {
+    return this.getDescription() + " o " + this.warehouse.getDescription();
   }
 }
