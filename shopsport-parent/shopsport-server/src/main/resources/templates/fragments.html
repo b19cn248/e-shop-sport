@@ -15,8 +15,6 @@
 </head>
 <body>
 
-
-
     <th th:fragment="column_link(filedName, columnLabel, removeTag)" th:remove="${removeTag}">
         <a th:class="text-white" th:href="@{'/users/page/' + ${currentPage} + '?sortField='
          +${filedName} + '&sortDir=' + ${sortField != filedName ? sortDir : reverseSortDir}

@@ -15,6 +15,11 @@ public class ProductController {
   @GetMapping
   public String viewHomePage(Model model) {
     model.addAttribute("products", productService.list());
-    return "products";
+    return "home";
+  }
+
+  @GetMapping("/detail")
+  public String viewDetailProduct(Model model) {
+    return "detail_product";
   }
 }
