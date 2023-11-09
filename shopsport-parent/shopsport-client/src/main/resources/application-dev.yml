@@ -11,6 +11,4 @@ spring:
     hibernate:
       ddl-auto: update
 server:
-  servlet:
-    context-path: /ShopSportServer
   port: 8888

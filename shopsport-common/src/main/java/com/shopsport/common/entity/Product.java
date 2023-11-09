@@ -51,6 +51,6 @@ public class Product extends BaseEntityWithUpdater {
 
   @Transient
   public String getDesc() {
-    return this.getDescription() + " o " + this.warehouse.getDescription();
+    return this.getName() + " o " + this.warehouse.getDescription();
   }
 }
