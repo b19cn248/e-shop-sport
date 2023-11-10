@@ -1,17 +1,8 @@
 package com.shopsport.server.configuration;
 
-import com.shopsport.server.repository.CategoryRepository;
-import com.shopsport.server.repository.ProductRepository;
-import com.shopsport.server.repository.RoleRepository;
-import com.shopsport.server.repository.UserRepository;
-import com.shopsport.server.service.CategoryService;
-import com.shopsport.server.service.ProductService;
-import com.shopsport.server.service.RoleService;
-import com.shopsport.server.service.UserService;
-import com.shopsport.server.service.impl.CategoryServiceImpl;
-import com.shopsport.server.service.impl.ProductServiceImpl;
-import com.shopsport.server.service.impl.RoleServiceImpl;
-import com.shopsport.server.service.impl.UserServiceImpl;
+import com.shopsport.server.repository.*;
+import com.shopsport.server.service.*;
+import com.shopsport.server.service.impl.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,5 +28,10 @@ public class ServerConfiguration {
   @Bean
   public CategoryService categoryService(CategoryRepository repository) {
     return new CategoryServiceImpl(repository);
+  }
+
+  @Bean
+  public BrandService brandService(BrandRepository repository) {
+    return new BrandServiceImpl(repository);
   }
 }

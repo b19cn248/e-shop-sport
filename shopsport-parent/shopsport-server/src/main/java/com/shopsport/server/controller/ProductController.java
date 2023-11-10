@@ -17,6 +17,6 @@ public class ProductController {
   @GetMapping("/products")
   public String viewPage(Model model) {
     model.addAttribute("products", productService.list());
-    return "products";
+    return "product";
   }
 }

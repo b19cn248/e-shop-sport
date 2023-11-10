@@ -23,6 +23,7 @@ public class Product extends BaseEntityWithUpdater {
   private Integer exportPrice;
   private Integer quantity;
   private String image;
+  private Boolean enabled;
 
   @ManyToOne
   @JoinColumn(name = "category_id")
@@ -31,6 +32,10 @@ public class Product extends BaseEntityWithUpdater {
   @ManyToOne
   @JoinColumn(name = "warehouse_id")
   private Warehouse warehouse;
+
+  @ManyToOne
+  @JoinColumn(name = "brand_id")
+  private Brand brand;
 
   public Product(Integer id, String code, String name, String unit, String origin, String description, Integer importPrice, Integer exportPrice, Integer quantity) {
     super.setId(id);

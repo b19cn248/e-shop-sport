@@ -17,8 +17,13 @@
 
         <div class="collapse navbar-collapse" id="topNavbar">
             <ul class="navbar-nav">
+                <th:block>
+                    <li class="nav-item" sec:authorize="hasAuthority('Admin')">
+                        <a class="nav-link" th:href="@{/users}">Quản lý người dùng</a>
+                    </li>
+                </th:block>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/users}">Quản lý người dùng</a>
+                    <a class="nav-link" th:href="@{/brands}">Brands</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/categories}">Danh mục sản phẩm</a>
