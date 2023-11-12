@@ -56,6 +56,14 @@ public class CommonConstants {
     public static final String ANONYMOUS = "ANONYMOUS";
   }
 
+  public static class ProductConstants {
+    private ProductConstants() {
+
+    }
+
+    public static final String SAVE_PRODUCT_SUCCESSFULLY = "The product has been saved successfully.";
+  }
+
   public static class ExporterMessage {
 
     private ExporterMessage() {

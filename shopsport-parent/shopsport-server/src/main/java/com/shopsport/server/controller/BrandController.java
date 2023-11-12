@@ -2,7 +2,7 @@ package com.shopsport.server.controller;
 
 import com.shopsport.common.entity.Brand;
 import com.shopsport.common.entity.Category;
-import com.shopsport.server.exception.BrandNotFoundException;
+import com.shopsport.server.exception.brand.BrandNotFoundException;
 import com.shopsport.server.service.BrandService;
 import com.shopsport.server.service.CategoryService;
 import com.shopsport.server.utils.FileUploadUtil;
@@ -71,8 +71,12 @@ public class BrandController {
   public String newBrand(Model model) {
     List<Category> listCategories = categoryService.listCategoriesUsedInForm();
 
+    System.out.println(listCategories);
+
     model.addAttribute("listCategories", listCategories);
-    model.addAttribute("brand", new Brand());
+    Brand brand = new Brand();
+    System.out.println(brand);
+    model.addAttribute("brand", brand);
     model.addAttribute("pageTitle", "Create New Brand");
 
     return "brands/brand_form";
@@ -86,7 +90,7 @@ public class BrandController {
       brand.setLogo(fileName);
 
       Brand savedBrand = brandService.save(brand);
-      String uploadDir = "../brand-logos/" + savedBrand.getId();
+      String uploadDir = "brand-logos/" + savedBrand.getId();
 
       FileUploadUtil.cleanDir(uploadDir);
       FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);

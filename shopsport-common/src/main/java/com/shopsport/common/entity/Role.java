@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -16,6 +17,7 @@ import java.util.Objects;
 @Builder
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Role extends BaseEntityWithUpdater implements Serializable {
 
   @Column(length = 40, nullable = false, unique = true)

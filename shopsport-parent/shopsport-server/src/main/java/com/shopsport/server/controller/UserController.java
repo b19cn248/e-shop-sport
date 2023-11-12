@@ -2,7 +2,7 @@ package com.shopsport.server.controller;
 
 import com.shopsport.common.entity.Role;
 import com.shopsport.common.entity.User;
-import com.shopsport.server.exception.UserNotFoundException;
+import com.shopsport.server.exception.user.UserNotFoundException;
 import com.shopsport.server.service.RoleService;
 import com.shopsport.server.service.UserService;
 import com.shopsport.server.utils.FileUploadUtil;

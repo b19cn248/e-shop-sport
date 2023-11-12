@@ -9,6 +9,8 @@ public interface BrandService {
 
   List<Brand> list();
 
+  List<Brand> listAll();
+
   Page<Brand> listByPage(int page, String sortField, String sortDir, String keyword);
 
   Brand save(Brand brand);

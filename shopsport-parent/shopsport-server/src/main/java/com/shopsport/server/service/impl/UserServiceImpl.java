@@ -1,7 +1,7 @@
 package com.shopsport.server.service.impl;
 
 import com.shopsport.common.entity.User;
-import com.shopsport.server.exception.UserNotFoundException;
+import com.shopsport.server.exception.user.UserNotFoundException;
 import com.shopsport.server.repository.UserRepository;
 import com.shopsport.server.service.UserService;
 import lombok.RequiredArgsConstructor;

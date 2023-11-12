@@ -1,7 +1,7 @@
 package com.shopsport.server.service.impl;
 
 import com.shopsport.common.entity.Brand;
-import com.shopsport.server.exception.BrandNotFoundException;
+import com.shopsport.server.exception.brand.BrandNotFoundException;
 import com.shopsport.server.repository.BrandRepository;
 import com.shopsport.server.service.BrandService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -28,6 +29,12 @@ public class BrandServiceImpl implements BrandService {
   }
 
   @Override
+  public List<Brand> listAll() {
+    log.info("(List all by id and name)");
+    return repository.listAll();
+  }
+
+  @Override
   public Page<Brand> listByPage(int page, String sortField, String sortDir, String keyword) {
     Sort sort = Sort.by(sortField);
 
@@ -35,7 +42,7 @@ public class BrandServiceImpl implements BrandService {
 
     Pageable pageable = PageRequest.of(page - 1, BRANDS_PER_PAGE, sort);
 
-    if (keyword != null) {
+    if (Objects.nonNull(keyword)) {
       return repository.findAll(keyword, pageable);
     }
 
@@ -49,8 +56,9 @@ public class BrandServiceImpl implements BrandService {
 
   @Override
   public Brand get(Integer id) {
+    log.info("(get) id:{}", id);
     try {
-      return repository.findById(id).get();
+      return repository.findById(id).orElseThrow();
     } catch (NoSuchElementException ex) {
       throw new BrandNotFoundException("Could not find any brand with ID " + id);
     }
@@ -75,7 +83,7 @@ public class BrandServiceImpl implements BrandService {
     if (isCreatingNew) {
       if (brandByName != null) return "Duplicate";
     } else {
-      if (brandByName != null && brandByName.getId() != id) {
+      if (brandByName != null && !Objects.equals(brandByName.getId(), id)) {
         return "Duplicate";
       }
     }

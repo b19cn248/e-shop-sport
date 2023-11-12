@@ -1,9 +1,8 @@
 package com.shopsport.server.security.custom;
 
 import com.shopsport.common.entity.User;
-import com.shopsport.server.exception.UserNotFoundException;
+import com.shopsport.server.exception.user.UserNotFoundException;
 import com.shopsport.server.repository.UserRepository;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

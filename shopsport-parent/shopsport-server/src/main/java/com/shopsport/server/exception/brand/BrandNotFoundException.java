@@ -1,4 +1,4 @@
-package com.shopsport.server.exception;
+package com.shopsport.server.exception.brand;
 
 public class BrandNotFoundException extends RuntimeException{
 

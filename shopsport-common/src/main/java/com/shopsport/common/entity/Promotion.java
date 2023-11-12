@@ -2,10 +2,7 @@ package com.shopsport.common.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
@@ -13,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "promotions")
+@EqualsAndHashCode(callSuper = true)
 public class Promotion extends BaseEntityWithUpdater {
 
   private String startTime;

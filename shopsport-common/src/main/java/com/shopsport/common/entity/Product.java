@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.*;
+
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
@@ -16,14 +18,21 @@ public class Product extends BaseEntityWithUpdater {
 
   private String code;
   private String name;
+  private String alias;
   private String unit;
   private String origin;
-  private String description;
+  private String shortDescription;
+  private String fullDescription;
   private Integer importPrice;
   private Integer exportPrice;
   private Integer quantity;
   private String image;
   private Boolean enabled;
+  private Boolean inStock;
+  private Double disCount;
+
+  @Column(nullable = false)
+  private String mainImage;
 
   @ManyToOne
   @JoinColumn(name = "category_id")
@@ -37,13 +46,20 @@ public class Product extends BaseEntityWithUpdater {
   @JoinColumn(name = "brand_id")
   private Brand brand;
 
+  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<ProductImage> images = new HashSet<>();
+
+  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<ProductDetail> details = new ArrayList<>();
+
+
   public Product(Integer id, String code, String name, String unit, String origin, String description, Integer importPrice, Integer exportPrice, Integer quantity) {
     super.setId(id);
     this.code = code;
     this.name = name;
     this.unit = unit;
     this.origin = origin;
-    this.description = description;
+    this.shortDescription = description;
     this.importPrice = importPrice;
     this.exportPrice = exportPrice;
     this.quantity = quantity;
@@ -57,5 +73,40 @@ public class Product extends BaseEntityWithUpdater {
   @Transient
   public String getDesc() {
     return this.getName() + " o " + this.warehouse.getDescription();
+  }
+
+  public void addExtraImage(String imageName) {
+    this.images.add(new ProductImage(imageName, this));
+  }
+
+  public void addDetail(String name, String value) {
+    this.details.add(new ProductDetail(name, value, this));
+  }
+
+  public void addDetail(Integer id, String name, String value) {
+    this.details.add(new ProductDetail(id, name, value, this));
+  }
+
+  @Transient
+  public String getMainImagePath() {
+    if (id == null || mainImage == null) return "/images/image-thumbnail.png";
+    return "/product-images/" + this.id + "/" + this.mainImage;
+  }
+
+  public boolean containsImageName(String imageName) {
+    Iterator<ProductImage> iterator = images.iterator();
+
+    while (iterator.hasNext()) {
+      ProductImage image = iterator.next();
+      if (image.getName().equals(imageName)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @Transient
+  public String getUpdatedTime() {
+    return super.getLastUpdatedAt().toString();
   }
 }

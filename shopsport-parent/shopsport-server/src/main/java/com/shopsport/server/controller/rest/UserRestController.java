@@ -1,4 +1,4 @@
-package com.shopsport.server.controller;
+package com.shopsport.server.controller.rest;
 
 import com.shopsport.server.service.UserService;
 import lombok.RequiredArgsConstructor;

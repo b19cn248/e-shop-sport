@@ -14,6 +14,7 @@ import java.util.Set;
 @Setter
 @Table(name = "categories")
 @Builder
+@EqualsAndHashCode(callSuper = true)
 public class Category extends BaseEntityWithUpdater {
 
   private String name;
