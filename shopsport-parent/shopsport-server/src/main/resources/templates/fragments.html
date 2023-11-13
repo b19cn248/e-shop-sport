@@ -15,16 +15,6 @@
 </head>
 <body>
 
-<!--    <th th:fragment="column_link(moduleURL, filedName, columnLabel, removeTag)" th:remove="${removeTag}">-->
-<!--        <a th:class="text-white" th:href="@{${moduleURL} + '/page/' +  + ${currentPage} + '?sortField='-->
-<!--         +${filedName} + '&sortDir=' + ${sortField != filedName ? sortDir : reverseSortDir}-->
-<!--                           + ${keyword != null ? '&keyword=' + keyword : ''}}">-->
-<!--            [[${columnLabel}]]-->
-<!--        </a>-->
-<!--        <span th:if="${sortField == filedName}"-->
-<!--              th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>-->
-<!--    </th>-->
-
 <a th:fragment="page_link(moduleURL, pageNum, label)"
    class="page-link"
    th:href="@{${moduleURL} + '/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">[[${label}]]</a>

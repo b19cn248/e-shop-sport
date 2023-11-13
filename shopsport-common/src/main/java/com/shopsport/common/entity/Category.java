@@ -3,9 +3,9 @@ package com.shopsport.common.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,7 +28,7 @@ public class Category extends BaseEntityWithUpdater {
   private Category parent;
 
   @OneToMany(mappedBy = "parent")
-  private Set<Category> children = new HashSet<>();
+  private List<Category> children = new ArrayList<>();
 
   @Column(name = "is_deleted")
   private boolean isDeleted;

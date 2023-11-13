@@ -2,7 +2,6 @@ package com.shopsport.server.controller;
 
 import com.shopsport.common.entity.Brand;
 import com.shopsport.common.entity.Product;
-import com.shopsport.common.entity.ProductImage;
 import com.shopsport.server.exception.product.ProductNotFoundException;
 import com.shopsport.server.service.BrandService;
 import com.shopsport.server.service.ProductService;
@@ -19,14 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import static com.shopsport.server.constant.CommonConstants.ProductConstants.SAVE_PRODUCT_SUCCESSFULLY;
+import static com.shopsport.server.constant.CommonConstants.ProductConstants.*;
 import static com.shopsport.server.constant.CommonConstants.UserConstants.MESSAGE;
 
 @Controller
@@ -52,7 +46,7 @@ public class ProductController {
 
     model.addAttribute("brands", brandService.list());
     model.addAttribute("pageTitle", "Create new product");
-    model.addAttribute("product", product);
+    model.addAttribute(PRODUCT, product);
     model.addAttribute("numberOfExistingExtraImages", 0);
 
     return "products/product_form";
@@ -71,64 +65,21 @@ public class ProductController {
         @RequestParam(name = "detailIDs", required = false) String[] detailIDs
   ) throws IOException {
 
-    System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-
 
     FileUploadUtil.setMainImageName(mainImageMultipart, product);
-    setExistingExtraImageNames(imageIDs, imageNames, product);
+    FileUploadUtil.setExistingExtraImageNames(imageIDs, imageNames, product);
     FileUploadUtil.setNewExtraImageNames(extraImageMultipart, product);
     setProductDetails(detailIDs, detailNames, detailValues, product);
-
 
     Product savedProduct = productService.save(product);
 
     FileUploadUtil.saveUploadedImages(mainImageMultipart, extraImageMultipart, savedProduct);
 
-    deleteExtraImagesWereRemovedOnForm(product);
+    FileUploadUtil.deleteExtraImagesWereRemovedOnForm(product);
 
     ra.addFlashAttribute(MESSAGE, SAVE_PRODUCT_SUCCESSFULLY);
 
-    return "redirect:/products";
-  }
-
-  private void deleteExtraImagesWereRemovedOnForm(Product product) {
-
-    String extraImageDir = "product-images/" + product.getId() + "/extras";
-
-    Path dirPath = Paths.get(extraImageDir);
-
-    try {
-      Files.list(dirPath).forEach(file -> {
-        String fileName = file.toFile().getName();
-        if (!product.containsImageName(fileName)) {
-          try {
-            Files.delete(file);
-            log.info("Deleted extra image: " + fileName);
-          } catch (IOException e) {
-            log.error("Could not delete extra image: " + fileName);
-          }
-        }
-      });
-    } catch (IOException e) {
-      log.error("Could not list directory: " + dirPath);
-    }
-
-  }
-
-  private void setExistingExtraImageNames(String[] imageIDs, String[] imageNames, Product product) {
-
-    if (imageIDs == null || imageIDs.length == 0) return;
-
-    Set<ProductImage> images = new HashSet<>();
-
-    for (int i = 0; i < imageIDs.length; i++) {
-      Integer id = Integer.parseInt(imageIDs[i]);
-      String name = imageNames[i];
-      images.add(new ProductImage(id, name, product));
-    }
-
-    product.setImages(images);
-
+    return REDIRECT_PRODUCTS;
   }
 
   @GetMapping("/products/edit/{id}")
@@ -143,7 +94,7 @@ public class ProductController {
       Integer numberOfExistingExtraImages = product.getImages().size();
 
 
-      model.addAttribute("product", product);
+      model.addAttribute(PRODUCT, product);
       model.addAttribute("brands", brands);
       model.addAttribute("pageTitle", "Edit product (ID: " + id + ")");
       model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
@@ -152,7 +103,7 @@ public class ProductController {
       return "products/product_form";
     } catch (ProductNotFoundException e) {
       ra.addFlashAttribute(MESSAGE, e.getMessage());
-      return "redirect:/products";
+      return REDIRECT_PRODUCTS;
     }
   }
 
@@ -165,17 +116,19 @@ public class ProductController {
     try {
       Product product = productService.get(id);
 
-      model.addAttribute("product", product);
+      model.addAttribute(PRODUCT, product);
 
       return "products/product_detail_modal";
     } catch (ProductNotFoundException e) {
       ra.addFlashAttribute(MESSAGE, e.getMessage());
-      return "redirect:/products";
+      return REDIRECT_PRODUCTS;
     }
   }
 
   private void setProductDetails(String[] detailIDs, String[] detailNames, String[] detailValues, Product product) {
-    log.debug("(setProductDetails) detailNames:{}, detailValues:{}, product:{}", detailNames, detailValues, product);
+    log.debug("(setProductDetails) detailIDS:{}, detailNames:{}, detailValues:{}, product:{}",
+          detailIDs, detailNames, detailValues, product);
+
     if (detailNames == null || detailNames.length == 0) return;
 
     for (int count = 0; count < detailNames.length; count++) {

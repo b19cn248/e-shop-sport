@@ -1,6 +1,7 @@
 package com.shopsport.server.utils;
 
 import com.shopsport.common.entity.Product;
+import com.shopsport.common.entity.ProductImage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,7 +12,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Stream;
+
+import static com.shopsport.server.constant.CommonConstants.ProductConstants.PRODUCT_IMAGES;
 
 @Slf4j
 public class FileUploadUtil {
@@ -79,7 +84,7 @@ public class FileUploadUtil {
       String originalFilename = mainImageMultipart.getOriginalFilename();
       if (originalFilename != null) {
         String fileName = StringUtils.cleanPath(originalFilename);
-        String uploadDir = "product-images/" + savedProduct.getId();
+        String uploadDir = PRODUCT_IMAGES + savedProduct.getId();
 
         FileUploadUtil.cleanDir(uploadDir);
         FileUploadUtil.saveFile(uploadDir, fileName, mainImageMultipart);
@@ -87,7 +92,7 @@ public class FileUploadUtil {
     }
 
     if (extraImageMultipart.length > 0) {
-      String uploadDir = "product-images/" + savedProduct.getId() + "/extras";
+      String uploadDir = PRODUCT_IMAGES + savedProduct.getId() + "/extras";
 
       for (MultipartFile multipartFile : extraImageMultipart) {
         if (multipartFile.isEmpty()) continue;
@@ -120,7 +125,6 @@ public class FileUploadUtil {
       }
     }
 
-    System.out.println(product.getImages());
   }
 
 
@@ -133,5 +137,45 @@ public class FileUploadUtil {
       }
     }
   }
+
+  public static void setExistingExtraImageNames(String[] imageIDs, String[] imageNames, Product product) {
+
+    if (imageIDs == null || imageIDs.length == 0) return;
+
+    Set<ProductImage> images = new HashSet<>();
+
+    for (int i = 0; i < imageIDs.length; i++) {
+      Integer id = Integer.parseInt(imageIDs[i]);
+      String name = imageNames[i];
+      images.add(new ProductImage(id, name, product));
+    }
+
+    product.setImages(images);
+
+  }
+
+  public static void deleteExtraImagesWereRemovedOnForm(Product product) {
+
+    String extraImageDir = PRODUCT_IMAGES + product.getId() + "/extras";
+
+    Path dirPath = Paths.get(extraImageDir);
+
+    try (Stream<Path> pathStream = Files.list(dirPath)) {
+      pathStream.forEach(file -> {
+        String fileName = file.toFile().getName();
+        if (!product.containsImageName(fileName)) {
+          try {
+            Files.delete(file);
+            log.info("Deleted extra image: " + fileName);
+          } catch (IOException e) {
+            log.error("Could not delete extra image: " + fileName);
+          }
+        }
+      });
+    } catch (IOException e) {
+      log.error("Could not list directory: " + dirPath);
+    }
+  }
+
 
 }

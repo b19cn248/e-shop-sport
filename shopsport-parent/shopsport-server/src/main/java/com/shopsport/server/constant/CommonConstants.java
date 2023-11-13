@@ -62,6 +62,12 @@ public class CommonConstants {
     }
 
     public static final String SAVE_PRODUCT_SUCCESSFULLY = "The product has been saved successfully.";
+
+    public static final String PRODUCT_IMAGES = "product-images/";
+
+    public static final String REDIRECT_PRODUCTS = "redirect:/products";
+
+    public static final String PRODUCT = "product";
   }
 
   public static class ExporterMessage {

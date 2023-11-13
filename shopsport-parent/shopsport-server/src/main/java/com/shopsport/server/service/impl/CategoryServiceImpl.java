@@ -58,15 +58,16 @@ public class CategoryServiceImpl implements CategoryService {
   public List<Category> listCategoriesUsedInTable() {
     log.info("List Categories Used in Table");
 
-    List<Category> categoriesUsedInForm = new ArrayList<>();
+    List<Category> categoriesUsedInTable = new ArrayList<>();
+    System.out.println(repository.getRootCategories());
 
     for (Category category : repository.getRootCategories()) {
 
-      categoriesUsedInForm.add(category);
-      addChildrenInTable(categoriesUsedInForm, category, 0);
+      categoriesUsedInTable.add(category);
+      addChildrenInTable(categoriesUsedInTable, category, 0);
     }
 
-    return categoriesUsedInForm;
+    return categoriesUsedInTable;
   }
 
 
@@ -83,9 +84,12 @@ public class CategoryServiceImpl implements CategoryService {
 
   private void addChildrenInTable(List<Category> categories, Category parent, int subLevel) {
     int newSubLevel = subLevel + 1;
+    System.out.println(parent.getChildren());
     for (Category subCategory : parent.getChildren()) {
+      System.out.println(subCategory);
       if (!subCategory.isDeleted()) {
         String name = createIndentedName(subCategory.getName(), newSubLevel);
+        System.out.println(Category.copyFull(subCategory,name));
         categories.add(Category.copyFull(subCategory, name));
       }
       addChildren(categories, subCategory, newSubLevel);
