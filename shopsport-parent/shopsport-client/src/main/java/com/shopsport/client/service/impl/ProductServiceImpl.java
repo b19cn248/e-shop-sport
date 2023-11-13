@@ -19,4 +19,10 @@ public class ProductServiceImpl implements ProductService {
     log.info("(list all Product)");
     return repository.findAll();
   }
+
+  @Override
+  public Product get(Integer id) {
+    log.info("(get) id:{}", id);
+    return repository.findById(id).orElseThrow();
+  }
 }

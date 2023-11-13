@@ -29,8 +29,6 @@ function checkFileSize(fileInput) {
 function showImageThumbnail(fileInput) {
     alert("Nguyen Minh Hieu")
 
-    console.log("NGuyen Minh Hieu")
-
     var file = fileInput.files[0];
     var reader = new FileReader();
     reader.onload = function (e) {

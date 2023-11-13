@@ -35,10 +35,20 @@ public class UserRepositoryTests {
 
     userNamHM.setRole(role);
 
-    userNamHM.setPassword(passwordEncoder.encode("11111111"));
+    userNamHM.setPassword(passwordEncoder.encode("Hieu230708@"));
 
     User savedUser = repo.save(userNamHM);
 
     assertThat(savedUser.getId()).isGreaterThan(0);
+  }
+
+  @Test
+  public void test() {
+
+    User user = repo.findById(1).get();
+
+    user.setEnabled(true);
+
+    repo.save(user);
   }
 }

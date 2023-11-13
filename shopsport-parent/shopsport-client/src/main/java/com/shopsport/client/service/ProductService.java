@@ -7,4 +7,6 @@ import java.util.List;
 public interface ProductService {
 
   List<Product> list();
+
+  Product get(Integer id);
 }
