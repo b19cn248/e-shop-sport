@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @EqualsAndHashCode(callSuper = true)
@@ -21,7 +22,10 @@ public class Product extends BaseEntityWithUpdater {
   private String alias;
   private String unit;
   private String origin;
+  @Column(length = 256)
   private String shortDescription;
+
+  @Column(length = 2048)
   private String fullDescription;
   private Integer importPrice;
   private Integer exportPrice;
@@ -67,7 +71,7 @@ public class Product extends BaseEntityWithUpdater {
 
   @Transient
   public String getImagePath() {
-    return "/images/" + this.image;
+    return "product-images/" + this.image;
   }
 
   @Transient
@@ -107,6 +111,7 @@ public class Product extends BaseEntityWithUpdater {
 
   @Transient
   public String getUpdatedTime() {
-    return super.getLastUpdatedAt().toString();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+    return dateFormat.format(super.getLastUpdatedAt());
   }
 }

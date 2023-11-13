@@ -12,11 +12,9 @@ import java.util.Set;
 @Entity
 @Table(name = "brands")
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Brand extends BaseEntityWithUpdater {
-
   private String name;
   private String logo;
 
@@ -31,6 +29,11 @@ public class Brand extends BaseEntityWithUpdater {
   public Brand(Integer id, String name) {
     super.setId(id);
     this.name = name;
+  }
+
+  public Brand(String name, Set<Category> categories) {
+    this.name = name;
+    this.categories = categories;
   }
 
   @Transient

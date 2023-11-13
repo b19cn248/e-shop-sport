@@ -8,8 +8,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -97,7 +98,7 @@ class CategoryRepositoryTests {
     Category category = repository.findById(1).orElseThrow();
     System.out.println(category.getName());
 
-    Set<Category> children = category.getChildren();
+    List<Category> children = category.getChildren();
 
     for (Category subCategory : children) {
       System.out.println(subCategory.getName());
@@ -112,7 +113,7 @@ class CategoryRepositoryTests {
     for (Category category : categories) {
       if (category.getParent() == null) {
         System.out.println(category.getName());
-        Set<Category> children = category.getChildren();
+        List<Category> children = category.getChildren();
 
         for (Category subCategory : children) {
           System.out.println("--" + subCategory.getName());
@@ -125,7 +126,7 @@ class CategoryRepositoryTests {
   private void printChildren(Category parent, int subLevel) {
     int newSubLevel = subLevel + 1;
 
-    Set<Category> children = parent.getChildren();
+    List<Category> children = parent.getChildren();
 
     for (Category subCategory : children) {
       for (int i = 0; i < newSubLevel; i++) {
@@ -135,5 +136,41 @@ class CategoryRepositoryTests {
       printChildren(subCategory, newSubLevel);
     }
   }
+
+  @Test
+  void addRootCategory() {
+    List<Category> categories = new ArrayList<>();
+
+    Category football = new Category("Football", "Football equipment", "football", null);
+    Category basketball = new Category("Basketball", "Basketball equipment", "basketball", null);
+    Category tennis = new Category("Tennis", "Tennis equipment", "tennis", null);
+    Category swimming = new Category("Swimming", "Swimming gear", "swimming", null);
+    categories.addAll(Arrays.asList(football, basketball, tennis, swimming));
+
+    repository.saveAll(categories);
+  }
+
+  @Test
+  void addChildren1() {
+
+    Category football = repository.findById(1).orElseThrow();
+    Category basketball = repository.findById(2).orElseThrow();
+    Category tennis = repository.findById(3).orElseThrow();
+    Category swimming = repository.findById(4).orElseThrow();
+
+    Category footballShoes = new Category("Football Shoes", "Football shoes", "football-shoes", football);
+    Category footballJerseys = new Category("Football Jerseys", "Football jerseys", "football-jerseys", football);
+    Category basketballShoes = new Category("Basketball Shoes", "Basketball shoes", "basketball-shoes", basketball);
+    Category basketballJerseys = new Category("Basketball Jerseys", "Basketball jerseys", "basketball-jerseys", basketball);
+    Category tennisRackets = new Category("Tennis Rackets", "Tennis rackets", "tennis-rackets", tennis);
+    Category tennisBalls = new Category("Tennis Balls", "Tennis balls", "tennis-balls", tennis);
+    Category swimmingGoggles = new Category("Swimming Goggles", "Swimming goggles", "swimming-goggles", swimming);
+    Category swimmingCaps = new Category("Swimming Caps", "Swimming caps", "swimming-caps", swimming);
+
+    repository.saveAll(List.of(
+          footballShoes, footballJerseys, basketballJerseys, basketballShoes,tennisBalls, tennisRackets, swimmingGoggles, swimmingCaps
+    ));
+  }
+
 
 }

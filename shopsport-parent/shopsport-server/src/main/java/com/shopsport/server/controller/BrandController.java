@@ -85,12 +85,16 @@ public class BrandController {
   @PostMapping("/brands/save")
   public String saveBrand(Brand brand, @RequestParam("fileImage") MultipartFile multipartFile,
                           RedirectAttributes ra) throws IOException {
+
+    System.out.println(brand.getCreatedBy());
+    System.out.println(brand.getCreatedAt());
+
     if (!multipartFile.isEmpty()) {
       String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
       brand.setLogo(fileName);
 
       Brand savedBrand = brandService.save(brand);
-      String uploadDir = "brand-logos/" + savedBrand.getId();
+      String uploadDir = "../brand-logos/" + savedBrand.getId();
 
       FileUploadUtil.cleanDir(uploadDir);
       FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
@@ -108,6 +112,8 @@ public class BrandController {
                           RedirectAttributes ra) {
     try {
       Brand brand = brandService.get(id);
+      System.out.println(brand.getCreatedAt());
+      System.out.println(brand.getCreatedBy());
       List<Category> listCategories = categoryService.listCategoriesUsedInForm();
 
       model.addAttribute("brand", brand);

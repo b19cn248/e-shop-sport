@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: 123456
-    url: jdbc:mysql://localhost:3306/shopmedb?allowPublicKeyRetrieval=true
+    username: hieu
+    password: 1234
+    url: jdbc:mysql://localhost:33062/shopme?allowPublicKeyRetrieval=true
   jpa:
     properties:
       hibernate:

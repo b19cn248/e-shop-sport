@@ -51,6 +51,9 @@ public class BrandServiceImpl implements BrandService {
 
   @Override
   public Brand save(Brand brand) {
+    log.info("(save) brand: {}", brand);
+    System.out.println(brand.getCreatedAt());
+    System.out.println(brand.getCreatedBy());
     return repository.save(brand);
   }
 

@@ -2,7 +2,6 @@ package com.shopsport.server.repository;
 
 import com.shopsport.common.entity.Role;
 import com.shopsport.common.entity.User;
-import com.shopsport.server.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -25,6 +24,8 @@ public class UserRepositoryTests {
   @Autowired
   private TestEntityManager entityManager;
 
+  private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
   @Test
   public void testCreateNewUserWithOneRole() {
 
@@ -33,6 +34,8 @@ public class UserRepositoryTests {
     User userNamHM = new User("hieunm123.ptit@gmail.com", "Hieu230708@", "Hieu", "Nguyen Minh");
 
     userNamHM.setRole(role);
+
+    userNamHM.setPassword(passwordEncoder.encode("11111111"));
 
     User savedUser = repo.save(userNamHM);
 

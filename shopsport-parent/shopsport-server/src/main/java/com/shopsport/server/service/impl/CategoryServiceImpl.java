@@ -24,6 +24,10 @@ public class CategoryServiceImpl implements CategoryService {
   @Override
   public Category save(Category category) {
     log.info("(save) category:{}", category);
+    System.out.println(category.getCreatedAt());
+    System.out.println(category.getCreatedBy());
+    category.setCreatedAt(category.getCreatedAt());
+    category.setCreatedBy(category.getLastUpdatedBy());
     return repository.save(category);
   }
 
@@ -58,15 +62,15 @@ public class CategoryServiceImpl implements CategoryService {
   public List<Category> listCategoriesUsedInTable() {
     log.info("List Categories Used in Table");
 
-    List<Category> categoriesUsedInForm = new ArrayList<>();
+    List<Category> categoriesUsedInTable = new ArrayList<>();
 
     for (Category category : repository.getRootCategories()) {
 
-      categoriesUsedInForm.add(category);
-      addChildrenInTable(categoriesUsedInForm, category, 0);
+      categoriesUsedInTable.add(category);
+      addChildrenInTable(categoriesUsedInTable, category, 0);
     }
 
-    return categoriesUsedInForm;
+    return categoriesUsedInTable;
   }
 
 

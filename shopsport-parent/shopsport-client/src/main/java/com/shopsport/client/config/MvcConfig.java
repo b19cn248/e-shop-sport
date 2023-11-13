@@ -1,4 +1,4 @@
-package com.shopsport.server.configuration;
+package com.shopsport.client.config;
 
 
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,6 @@ public class MvcConfig implements WebMvcConfigurer {
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    exposeDirectory("user-photos", registry);
     exposeDirectory("../category-images", registry);
     exposeDirectory("../brand-logos", registry);
     exposeDirectory("../product-images", registry);

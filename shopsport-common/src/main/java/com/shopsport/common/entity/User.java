@@ -18,10 +18,6 @@ import java.util.Objects;
 @EqualsAndHashCode(callSuper = true)
 public class User extends BaseEntityWithUpdater implements Serializable {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
-
   @Column(length = 128, nullable = false, unique = true)
   private String email;
 
