@@ -22,7 +22,10 @@ public class Product extends BaseEntityWithUpdater {
   private String alias;
   private String unit;
   private String origin;
+  @Column(length = 256)
   private String shortDescription;
+
+  @Column(length = 2048)
   private String fullDescription;
   private Integer importPrice;
   private Integer exportPrice;
@@ -68,7 +71,7 @@ public class Product extends BaseEntityWithUpdater {
 
   @Transient
   public String getImagePath() {
-    return "/images/" + this.image;
+    return "product-images/" + this.image;
   }
 
   @Transient

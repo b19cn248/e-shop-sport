@@ -15,6 +15,9 @@ public class ProductController {
   @GetMapping
   public String viewHomePage(Model model) {
     model.addAttribute("products", productService.list());
+    productService.list().forEach(product -> {
+      System.out.println(product.getMainImagePath());
+    });
     return "home";
   }
 

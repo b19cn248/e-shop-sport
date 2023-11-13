@@ -53,7 +53,7 @@ public class Category extends BaseEntityWithUpdater {
   public String getImagePath() {
     if (Objects.isNull(this.getImage())) return "/images/image-thumbnail.png";
 
-    return "/category-images/" + this.id + "/" + this.image;
+    return "../category-images/" + this.id + "/" + this.image;
   }
 
   public static Category copyIdAndName(Integer id, String name) {
