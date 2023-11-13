@@ -42,6 +42,13 @@ public class Category extends BaseEntityWithUpdater {
     this.name = name;
   }
 
+  public Category(String name, String description, String alias, Category parent) {
+    this.name = name;
+    this.description = description;
+    this.alias = alias;
+    this.parent = parent;
+  }
+
   @Transient
   public String getImagePath() {
     if (Objects.isNull(this.getImage())) return "/images/image-thumbnail.png";

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @EqualsAndHashCode(callSuper = true)
@@ -107,6 +108,7 @@ public class Product extends BaseEntityWithUpdater {
 
   @Transient
   public String getUpdatedTime() {
-    return super.getLastUpdatedAt().toString();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+    return dateFormat.format(super.getLastUpdatedAt());
   }
 }

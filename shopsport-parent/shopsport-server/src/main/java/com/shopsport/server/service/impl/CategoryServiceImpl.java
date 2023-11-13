@@ -24,6 +24,10 @@ public class CategoryServiceImpl implements CategoryService {
   @Override
   public Category save(Category category) {
     log.info("(save) category:{}", category);
+    System.out.println(category.getCreatedAt());
+    System.out.println(category.getCreatedBy());
+    category.setCreatedAt(category.getCreatedAt());
+    category.setCreatedBy(category.getLastUpdatedBy());
     return repository.save(category);
   }
 
@@ -59,7 +63,6 @@ public class CategoryServiceImpl implements CategoryService {
     log.info("List Categories Used in Table");
 
     List<Category> categoriesUsedInTable = new ArrayList<>();
-    System.out.println(repository.getRootCategories());
 
     for (Category category : repository.getRootCategories()) {
 
@@ -84,12 +87,9 @@ public class CategoryServiceImpl implements CategoryService {
 
   private void addChildrenInTable(List<Category> categories, Category parent, int subLevel) {
     int newSubLevel = subLevel + 1;
-    System.out.println(parent.getChildren());
     for (Category subCategory : parent.getChildren()) {
-      System.out.println(subCategory);
       if (!subCategory.isDeleted()) {
         String name = createIndentedName(subCategory.getName(), newSubLevel);
-        System.out.println(Category.copyFull(subCategory,name));
         categories.add(Category.copyFull(subCategory, name));
       }
       addChildren(categories, subCategory, newSubLevel);
