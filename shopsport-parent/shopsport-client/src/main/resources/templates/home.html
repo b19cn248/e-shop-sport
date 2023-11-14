@@ -6,6 +6,7 @@
 <header>
     <!-- Jumbotron -->
     <div class="p-3 text-center bg-white border-bottom">
+
         <div class="container">
             <div class="row gy-3">
                 <!-- Left elements -->
@@ -18,16 +19,25 @@
 
                 <!-- Center elements -->
                 <div class="order-lg-last col-lg-5 col-sm-8 col-8">
+                    <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+                        <input type="submit">
+                    </form>
                     <div class="d-flex float-end">
                         <a th:href="@{/login}"
                            class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank">
                             <i class="fas fa-user-alt m-1 me-md-2"></i>
-                            <p class="d-none d-md-block mb-0"  sec:authentication="principal.fullname">Sign in</p>
+                            <p class="d-none d-md-block mb-0" sec:authentication="principal.fullname"></p>
                         </a>
                         <a th:href="@{/carts}"
                            class="border rounded py-1 px-3 nav-link d-flex align-items-center">
                             <i class="fas fa-shopping-cart m-1 me-md-2"></i>
-                            <p class="d-none d-md-block mb-0" id="cart-count">0</p>
+                            <p class="d-none d-md-block mb-0" id="cart-count">[[${numberOfProducts}]]</p>
+                        </a>
+
+                        <a href="" id="logoutLink"
+                           class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank">
+                            <i class="fas fa-user-alt m-1 me-md-2"></i>
+                            <p class="d-none d-md-block mb-0">Logout</p>
                         </a>
                     </div>
                 </div>
@@ -306,7 +316,8 @@
                                 </div>
                                 <p class="card-text">[[${product.name}]]</p>
                                 <div class="card-footer d-flex align-items-end justify-content-between pt-3 px-0 pb-0 mt-auto">
-                                    <a href="#!" class="btn btn-primary shadow-0 me-1 add-to-cart">Add to cart</a>
+                                    <a th:href="@{'/add-to-cart/' + ${product.id}}"
+                                       class="btn btn-primary shadow-0 me-1 add-to-cart">Add to cart</a>
                                     <a href="#!" class="btn btn-light border icon-hover px-2 pt-2">
                                         <i class="fas fa-heart fa-lg text-secondary px-1"></i>
                                     </a>
@@ -393,11 +404,43 @@
 
     }
 
+    function handleLinkClick(event) {
+        // Ngăn chặn hành vi chuyển hướng mặc định
+        event.preventDefault();
+
+        // Lấy đường dẫn từ thuộc tính "href" của thẻ <a>
+        var hrefValue = event.target.getAttribute('href');
+
+        // Log ra đường dẫn
+        console.log('Đường dẫn từ thẻ <a>:', hrefValue);
+    }
+
+
     // Lắng nghe sự kiện click trên nút "Add to Cart"
     var addToCartButtons = document.querySelectorAll(".add-to-cart");
     addToCartButtons.forEach(function (button) {
         button.addEventListener("click", addToCart);
     });
+
+    $(document).ready(function () {
+        $("#logoutLink").on("click", function (e) {
+            e.preventDefault();
+            document.logoutForm.submit();
+        })
+
+        $(".add-to-cart").on("click", function(e) {
+            e.preventDefault();
+
+            var hrefValue = $(this).attr("href");
+
+            $.get(hrefValue, function (response) {
+                console.log(response)
+            })
+        });
+
+
+    })
+
 
 </script>
 </body>

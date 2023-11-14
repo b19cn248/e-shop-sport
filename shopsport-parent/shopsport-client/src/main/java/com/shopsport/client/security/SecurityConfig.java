@@ -1,6 +1,7 @@
 package com.shopsport.client.security;
 
 import com.shopsport.client.repository.UserRepository;
+import com.shopsport.client.security.custom.CustomLoginSuccessHandler;
 import com.shopsport.client.security.custom.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,6 +48,12 @@ public class SecurityConfig {
   }
 
   @Bean
+  public CustomLoginSuccessHandler customLoginSuccessHandler() {
+    return new CustomLoginSuccessHandler();
+  }
+
+
+  @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http, RememberMeServices rememberMeServices) throws Exception {
     http.authorizeHttpRequests(requests -> requests
                 .anyRequest().authenticated()
@@ -56,6 +63,7 @@ public class SecurityConfig {
                       .loginPage("/login")
                       .usernameParameter("email")
                       .permitAll()
+                      .successHandler(customLoginSuccessHandler())
           )
           .logout(LogoutConfigurer::permitAll)
           .rememberMe(remember -> remember

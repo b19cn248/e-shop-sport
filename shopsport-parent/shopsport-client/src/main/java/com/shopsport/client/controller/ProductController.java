@@ -1,6 +1,7 @@
 package com.shopsport.client.controller;
 
 import com.shopsport.client.service.BrandService;
+import com.shopsport.client.service.CartItemService;
 import com.shopsport.client.service.CategoryService;
 import com.shopsport.client.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +20,14 @@ public class ProductController {
 
   private final CategoryService categoryService;
 
+  private final CartItemService cartItemService;
+
   @GetMapping
   public String viewHomePage(Model model) {
     model.addAttribute("products", productService.list());
     model.addAttribute("brands", brandService.listAll());
     model.addAttribute("categories", categoryService.listAll());
+    model.addAttribute("numberOfProducts", cartItemService.getNumberOfProduct());
     return "home";
   }
 

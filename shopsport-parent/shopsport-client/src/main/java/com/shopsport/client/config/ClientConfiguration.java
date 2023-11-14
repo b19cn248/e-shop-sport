@@ -1,12 +1,12 @@
 package com.shopsport.client.config;
 
-import com.shopsport.client.repository.BrandRepository;
-import com.shopsport.client.repository.CategoryRepository;
-import com.shopsport.client.repository.ProductRepository;
+import com.shopsport.client.repository.*;
 import com.shopsport.client.service.BrandService;
+import com.shopsport.client.service.CartItemService;
 import com.shopsport.client.service.CategoryService;
 import com.shopsport.client.service.ProductService;
 import com.shopsport.client.service.impl.BrandServiceImpl;
+import com.shopsport.client.service.impl.CartItemServiceImpl;
 import com.shopsport.client.service.impl.CategoryServiceImpl;
 import com.shopsport.client.service.impl.ProductServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -28,5 +28,11 @@ public class ClientConfiguration {
   @Bean
   public CategoryService categoryService(CategoryRepository repository) {
     return new CategoryServiceImpl(repository);
+  }
+
+  @Bean
+  public CartItemService cartItemService(CartItemRepository cartItemRepository, CustomerRepository customerRepository,
+                                         ProductRepository productRepository) {
+    return new CartItemServiceImpl(cartItemRepository, customerRepository, productRepository);
   }
 }
