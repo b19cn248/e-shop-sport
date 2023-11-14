@@ -221,50 +221,26 @@
                     <hr />
                     <h6 class="text-dark my-4">Items in cart</h6>
 
+                    <th:block th:each="product: ${products}">
+
                     <div class="d-flex align-items-center mb-4">
                         <div class="me-3 position-relative">
               <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
                 1
               </span>
-                            <img th:src="@{/images/giay1.jpg}" style="height: 96px; width: 96x;" class="img-sm rounded border" />
+                            <img th:src="@{${product.mainImagePath}}" style="height: 96px; width: 96x;" class="img-sm rounded border" />
                         </div>
                         <div class="">
                             <a href="#" class="nav-link">
-                               Giày chạy bộ <br />
-                                White color
+                             [[${product.name}]] <br />
                             </a>
                             <div class="price text-muted">Total: $295.99</div>
                         </div>
                     </div>
 
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="me-3 position-relative">
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
-                1
-              </span>
-                            <img th:src="@{/images/giay_2.jpg}" style="height: 96px; width: 96x;" class="img-sm rounded border" />
-                        </div>
-                        <div class="">
-                            <a href="#" class="nav-link">
-                                Giày thể thao <br />
-                                Large size
-                            </a>
-                            <div class="price text-muted">Total: $217.99</div>
-                        </div>
-                    </div>
+                    </th:block>
 
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="me-3 position-relative">
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
-                3
-              </span>
-                            <img th:src="@{/images/giaydabong.jpg}" style="height: 96px; width: 96x;" class="img-sm rounded border" />
-                        </div>
-                        <div class="">
-                            <a href="#" class="nav-link">Giày đá bóng - Green</a>
-                            <div class="price text-muted">Total: $910.00</div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
