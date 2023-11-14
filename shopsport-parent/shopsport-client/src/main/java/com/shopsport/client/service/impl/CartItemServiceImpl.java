@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Slf4j
 public class CartItemServiceImpl implements CartItemService {
@@ -44,5 +46,22 @@ public class CartItemServiceImpl implements CartItemService {
     Customer customer = customerRepository.findByEmail(username).orElseThrow();
 
     return cartItemRepository.getNumberOfProduct(customer.getId());
+  }
+
+
+  @Override
+  public List<Product> listByCustomer() {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    Customer customer = customerRepository.findByEmail(username).orElseThrow();
+
+    List<Product> products = cartItemRepository.findByCustomer(customer.getId());
+
+    System.out.println(products.size());
+
+    System.out.println(products);
+
+    return products;
+
   }
 }
