@@ -22,12 +22,12 @@
                         <a th:href="@{/login}"
                            class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank">
                             <i class="fas fa-user-alt m-1 me-md-2"></i>
-                            <p class="d-none d-md-block mb-0">Sign in</p>
+                            <p class="d-none d-md-block mb-0"  sec:authentication="principal.fullname">Sign in</p>
                         </a>
                         <a th:href="@{/carts}"
                            class="border rounded py-1 px-3 nav-link d-flex align-items-center">
                             <i class="fas fa-shopping-cart m-1 me-md-2"></i>
-                            <p class="d-none d-md-block mb-0">My cart</p>
+                            <p class="d-none d-md-block mb-0" id="cart-count">0</p>
                         </a>
                     </div>
                 </div>
@@ -306,11 +306,12 @@
                                 </div>
                                 <p class="card-text">[[${product.name}]]</p>
                                 <div class="card-footer d-flex align-items-end justify-content-between pt-3 px-0 pb-0 mt-auto">
-                                    <a href="#!" class="btn btn-primary shadow-0 me-1">Add to cart</a>
+                                    <a href="#!" class="btn btn-primary shadow-0 me-1 add-to-cart">Add to cart</a>
                                     <a href="#!" class="btn btn-light border icon-hover px-2 pt-2">
                                         <i class="fas fa-heart fa-lg text-secondary px-1"></i>
                                     </a>
-                                    <a th:href="@{'/detail/' + ${product.id}}" class="btn btn-primary shadow-0 me-1 px-2 pt-2">Detail</a>
+                                    <a th:href="@{'/detail/' + ${product.id}}"
+                                       class="btn btn-primary shadow-0 me-1 px-2 pt-2">Detail</a>
                                 </div>
                             </div>
                         </div>
@@ -344,9 +345,60 @@
                 </div>
             </div>
         </div>
+    </div>
 </section>
-<!-- sidebar + content -->
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div th:replace="~{fragments :: footer}"></div>
+<script type="text/javascript">
+    // Số lượng sản phẩm trong giỏ hàng
+    var cartCount = 0;
+
+    // Function để thêm sản phẩm vào giỏ hàng và cập nhật số lượng
+    function addToCart() {
+        alert("SUCCESS")
+        // Thêm sản phẩm vào giỏ hàng (trong thực tế, bạn sẽ có một đối tượng sản phẩm)
+        cartCount++;
+
+        // Cập nhật số lượng sản phẩm trong biểu tượng giỏ hàng
+        var cartCountElement = document.getElementById("cart-count");
+        cartCountElement.innerText = cartCount;
+
+    }
+
+    // Lắng nghe sự kiện click trên nút "Add to Cart"
+    var addToCartButtons = document.querySelectorAll(".add-to-cart");
+    addToCartButtons.forEach(function (button) {
+        button.addEventListener("click", addToCart);
+    });
+
+</script>
 </body>
 </html>
