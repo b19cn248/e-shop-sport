@@ -139,6 +139,8 @@ public class UserController {
                        @RequestParam("image") MultipartFile multipartFile) throws IOException {
     log.info("(create) user:{}", user);
 
+    System.out.println(user.getId());
+
     if (!multipartFile.isEmpty()) {
       String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
       user.setPhotos(fileName);

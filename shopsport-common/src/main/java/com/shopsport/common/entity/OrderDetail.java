@@ -25,10 +25,6 @@ public class OrderDetail extends BaseEntityWithUpdater {
   private Order order;
 
   @ManyToOne
-  @JoinColumn(name = "customer_id")
-  private Customer customer;
-
-  @ManyToOne
   @JoinColumn(name = "product_id")
   private Product product;
 }

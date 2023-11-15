@@ -33,7 +33,7 @@ public class CartItemServiceImpl implements CartItemService {
     Customer customer = customerRepository.findByEmail(username).orElseThrow();
     Product product = productRepository.findById(productId).orElseThrow();
 
-    cartItemRepository.save(new CartItem(customer, product));
+    cartItemRepository.save(new CartItem(customer, product, 0));
 
     return "OK";
   }
@@ -63,5 +63,15 @@ public class CartItemServiceImpl implements CartItemService {
 
     return products;
 
+  }
+
+  @Override
+  public List<CartItem> listAll() {
+
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    Customer customer = customerRepository.findByEmail(username).orElseThrow();
+
+    return cartItemRepository.listAll(customer.getId());
   }
 }

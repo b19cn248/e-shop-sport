@@ -13,7 +13,7 @@ public class CartController {
 
   @GetMapping("/carts")
   public String cartView(Model model) {
-    model.addAttribute("products", cartItemService.listByCustomer());
+    model.addAttribute("cartItems", cartItemService.listAll());
     return "cart";
   }
 }

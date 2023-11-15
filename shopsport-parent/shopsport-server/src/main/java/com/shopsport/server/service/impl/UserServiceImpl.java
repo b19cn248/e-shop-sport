@@ -2,6 +2,7 @@ package com.shopsport.server.service.impl;
 
 import com.shopsport.common.entity.User;
 import com.shopsport.server.exception.user.UserNotFoundException;
+import com.shopsport.server.repository.CustomerRepository;
 import com.shopsport.server.repository.UserRepository;
 import com.shopsport.server.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
 
   private final UserRepository repository;
   private final PasswordEncoder passwordEncoder;
+  private final CustomerRepository customerRepository;
 
   @Override
   public List<User> getAll() {

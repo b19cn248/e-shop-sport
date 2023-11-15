@@ -24,4 +24,6 @@ public class CartItem extends BaseEntityWithUpdater {
   @ManyToOne
   @JoinColumn(name = "product_id")
   private Product product;
+
+  private Integer quantity;
 }

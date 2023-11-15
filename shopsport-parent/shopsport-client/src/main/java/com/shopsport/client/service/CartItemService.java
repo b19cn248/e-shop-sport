@@ -12,4 +12,6 @@ public interface CartItemService {
   Integer getNumberOfProduct();
 
   List<Product> listByCustomer();
+
+  List<CartItem> listAll();
 }

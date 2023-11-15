@@ -16,6 +16,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @EqualsAndHashCode(callSuper = true)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 public class User extends BaseEntityWithUpdater implements Serializable {
 
   @Column(length = 128, nullable = false, unique = true)

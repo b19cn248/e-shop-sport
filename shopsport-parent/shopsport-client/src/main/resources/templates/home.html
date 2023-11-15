@@ -23,8 +23,8 @@
                         <input type="submit">
                     </form>
                     <div class="d-flex float-end">
-                        <a th:href="@{/login}"
-                           class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank">
+                        <a th:href="@{/customers}"
+                           class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center">
                             <i class="fas fa-user-alt m-1 me-md-2"></i>
                             <p class="d-none d-md-block mb-0" sec:authentication="principal.fullname"></p>
                         </a>
@@ -388,60 +388,5 @@
 
 
 <div th:replace="~{fragments :: footer}"></div>
-<script type="text/javascript">
-    // Số lượng sản phẩm trong giỏ hàng
-    var cartCount = 0;
-
-    // Function để thêm sản phẩm vào giỏ hàng và cập nhật số lượng
-    function addToCart() {
-        alert("SUCCESS")
-        // Thêm sản phẩm vào giỏ hàng (trong thực tế, bạn sẽ có một đối tượng sản phẩm)
-        cartCount++;
-
-        // Cập nhật số lượng sản phẩm trong biểu tượng giỏ hàng
-        var cartCountElement = document.getElementById("cart-count");
-        cartCountElement.innerText = cartCount;
-
-    }
-
-    function handleLinkClick(event) {
-        // Ngăn chặn hành vi chuyển hướng mặc định
-        event.preventDefault();
-
-        // Lấy đường dẫn từ thuộc tính "href" của thẻ <a>
-        var hrefValue = event.target.getAttribute('href');
-
-        // Log ra đường dẫn
-        console.log('Đường dẫn từ thẻ <a>:', hrefValue);
-    }
-
-
-    // Lắng nghe sự kiện click trên nút "Add to Cart"
-    var addToCartButtons = document.querySelectorAll(".add-to-cart");
-    addToCartButtons.forEach(function (button) {
-        button.addEventListener("click", addToCart);
-    });
-
-    $(document).ready(function () {
-        $("#logoutLink").on("click", function (e) {
-            e.preventDefault();
-            document.logoutForm.submit();
-        })
-
-        $(".add-to-cart").on("click", function(e) {
-            e.preventDefault();
-
-            var hrefValue = $(this).attr("href");
-
-            $.get(hrefValue, function (response) {
-                console.log(response)
-            })
-        });
-
-
-    })
-
-
-</script>
 </body>
 </html>
