@@ -27,8 +27,8 @@ public class Product extends BaseEntityWithUpdater {
 
   @Column(length = 2048)
   private String fullDescription;
-  private Integer importPrice;
-  private Integer exportPrice;
+  private Double importPrice;
+  private Double exportPrice;
   private Integer quantity;
   private String image;
   private Boolean enabled;
@@ -57,7 +57,7 @@ public class Product extends BaseEntityWithUpdater {
   private List<ProductDetail> details = new ArrayList<>();
 
 
-  public Product(Integer id, String code, String name, String unit, String origin, String description, Integer importPrice, Integer exportPrice, Integer quantity) {
+  public Product(Integer id, String code, String name, String unit, String origin, String description, Double importPrice, Double exportPrice, Integer quantity) {
     super.setId(id);
     this.code = code;
     this.name = name;

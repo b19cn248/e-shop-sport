@@ -38,4 +38,9 @@ public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
   @Query(value = "select sum (ci.quantity * p.exportPrice * (1-p.disCount/100)) from CartItem ci" +
         " JOIN ci.product p WHERE ci.customer.id = :customerId")
   Double getTotalMoney(Integer customerId);
+
+  @Query(value = "delete from CartItem ci where ci.customer.id = :customerId")
+  @Modifying
+  @Transactional
+  void removeCustomerCart(Integer customerId);
 }

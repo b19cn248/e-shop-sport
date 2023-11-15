@@ -20,4 +20,6 @@ public interface CartItemService {
   void updateQuantity(Integer id, Integer quantity);
 
   Double getTotalMoney();
+
+  void removeCustomerCart();
 }

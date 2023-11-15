@@ -97,4 +97,15 @@ public class CartItemServiceImpl implements CartItemService {
 
     return cartItemRepository.getTotalMoney(customer.getId());
   }
+
+  @Override
+  @Transactional
+  public void removeCustomerCart() {
+    log.info("(removeCustomerCart)");
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    Customer customer = customerRepository.findByEmail(username).orElseThrow();
+
+    cartItemRepository.removeCustomerCart(customer.getId());
+  }
 }
