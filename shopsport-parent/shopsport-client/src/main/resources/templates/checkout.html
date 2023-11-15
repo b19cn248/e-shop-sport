@@ -199,20 +199,20 @@
                     <h6 class="mb-3">Summary</h6>
                     <div class="d-flex justify-content-between">
                         <p class="mb-2">Total price:</p>
-                        <p class="mb-2">$195.90</p>
+                        <p class="mb-2">$[[${totalMoney}]]</p>
                     </div>
                     <div class="d-flex justify-content-between">
                         <p class="mb-2">Discount:</p>
-                        <p class="mb-2 text-danger">- $60.00</p>
+                        <p class="mb-2 text-danger">- $00.00</p>
                     </div>
                     <div class="d-flex justify-content-between">
                         <p class="mb-2">Shipping cost:</p>
-                        <p class="mb-2">+ $14.00</p>
+                        <p class="mb-2">+ $02.00</p>
                     </div>
                     <hr />
                     <div class="d-flex justify-content-between">
                         <p class="mb-2">Total price:</p>
-                        <p class="mb-2 fw-bold">$149.90</p>
+                        <p class="mb-2 fw-bold">$[[${totalMoney + 2}]]</p>
                     </div>
 
                     <div class="input-group mt-3 mb-4">
@@ -223,20 +223,20 @@
                     <hr />
                     <h6 class="text-dark my-4">Items in cart</h6>
 
-                    <th:block th:each="product: ${products}">
+                    <th:block th:each="item: ${cartItems}">
 
                     <div class="d-flex align-items-center mb-4">
                         <div class="me-3 position-relative">
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
-                1
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary cart-item">
+                [[${item.quantity}]]
               </span>
-                            <img th:src="@{${product.mainImagePath}}" style="height: 96px; width: 96x;" class="img-sm rounded border" />
+                            <img th:src="@{${item.product.mainImagePath}}" style="height: 96px; width: 96x;" class="img-sm rounded border" />
                         </div>
                         <div class="">
                             <a href="#" class="nav-link">
-                             [[${product.name}]] <br />
+                             [[${item.product.name}]] <br />
                             </a>
-                            <div class="price text-muted">Total: $295.99</div>
+                            <div class="price text-muted">$ [[${item.product.exportPrice * item.quantity}]]</div>
                         </div>
                     </div>
 
@@ -250,5 +250,16 @@
 </section>
 
 <div th:replace="~{fragments :: footer}"></div>
+<script>
+    document.querySelectorAll("cart-item").forEach(function(spanElement, index) {
+        // Lấy giá trị từ Local Storage với key "sic" + index
+        const sicValue = localStorage.getItem("sic" + index);
+
+        // Đặt giá trị vào thẻ <span>
+        if (sicValue) {
+            spanElement.textContent = sicValue;
+        }
+    });
+</script>
 </body>
 </html>

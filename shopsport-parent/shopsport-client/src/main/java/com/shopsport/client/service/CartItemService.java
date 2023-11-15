@@ -14,4 +14,10 @@ public interface CartItemService {
   List<Product> listByCustomer();
 
   List<CartItem> listAll();
+
+  void remove(Integer id);
+
+  void updateQuantity(Integer id, Integer quantity);
+
+  Double getTotalMoney();
 }

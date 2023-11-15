@@ -14,6 +14,7 @@ public class CartController {
   @GetMapping("/carts")
   public String cartView(Model model) {
     model.addAttribute("cartItems", cartItemService.listAll());
+    model.addAttribute("totalMoney", cartItemService.getTotalMoney());
     return "cart";
   }
 }

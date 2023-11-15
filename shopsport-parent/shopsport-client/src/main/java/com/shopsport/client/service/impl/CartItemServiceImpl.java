@@ -33,7 +33,9 @@ public class CartItemServiceImpl implements CartItemService {
     Customer customer = customerRepository.findByEmail(username).orElseThrow();
     Product product = productRepository.findById(productId).orElseThrow();
 
-    cartItemRepository.save(new CartItem(customer, product, 0));
+    if (cartItemRepository.getByCustomerId(productId, customer.getId()).isEmpty()) {
+      cartItemRepository.save(new CartItem(customer, product, 1));
+    } else cartItemRepository.increaseQuantity(customer.getId(), productId);
 
     return "OK";
   }
@@ -73,5 +75,26 @@ public class CartItemServiceImpl implements CartItemService {
     Customer customer = customerRepository.findByEmail(username).orElseThrow();
 
     return cartItemRepository.listAll(customer.getId());
+  }
+
+  @Override
+  @Transactional
+  public void remove(Integer id) {
+    cartItemRepository.deleteById(id);
+  }
+
+  @Override
+  public void updateQuantity(Integer id, Integer quantity) {
+    log.info("(updateQuantity) id:{}", id);
+    cartItemRepository.updateQuantity(id, quantity);
+  }
+
+  @Override
+  public Double getTotalMoney() {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    Customer customer = customerRepository.findByEmail(username).orElseThrow();
+
+    return cartItemRepository.getTotalMoney(customer.getId());
   }
 }

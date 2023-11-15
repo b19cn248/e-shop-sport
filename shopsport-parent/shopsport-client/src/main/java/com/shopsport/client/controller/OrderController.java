@@ -14,7 +14,8 @@ public class OrderController {
 
   @GetMapping("/checkout")
   public String checkoutView(Model model) {
-    model.addAttribute("products", cartItemService.listByCustomer());
+    model.addAttribute("cartItems", cartItemService.listAll());
+    model.addAttribute("totalMoney", cartItemService.getTotalMoney());
     return "checkout";
   }
 }
