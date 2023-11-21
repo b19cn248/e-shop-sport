@@ -1,13 +1,13 @@
 package com.shopsport.common.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -25,4 +25,14 @@ public class Order extends BaseEntityWithUpdater {
   @JoinColumn(name = "customer_id")
   private Customer customer;
 
+  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<OrderDetail> orderDetails = new ArrayList<>();
+
+  public Order(String code, Double totalMoney, Double moneyPaid, Integer status, Customer customer) {
+    this.code = code;
+    this.totalMoney = totalMoney;
+    this.moneyPaid = moneyPaid;
+    this.status = status;
+    this.customer = customer;
+  }
 }

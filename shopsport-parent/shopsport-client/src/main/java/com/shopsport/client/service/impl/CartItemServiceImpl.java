@@ -95,7 +95,9 @@ public class CartItemServiceImpl implements CartItemService {
 
     Customer customer = customerRepository.findByEmail(username).orElseThrow();
 
-    return cartItemRepository.getTotalMoney(customer.getId());
+    Double total = cartItemRepository.getTotalMoney(customer.getId());
+
+    return total != null ? total : 0.0;
   }
 
   @Override

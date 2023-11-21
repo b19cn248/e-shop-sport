@@ -82,8 +82,13 @@
                 <div class="card border shadow-0">
                     <div class="m-4">
                         <h4 class="card-title mb-4">Your shopping cart</h4>
-                        <th:block th:each="item: ${cartItems}">
-                            <div class="row gy-3 mb-4">
+                        <th:block th:if="${cartItems == null or #lists.isEmpty(cartItems)}">
+                            <div class="alert alert-info" role="alert">
+                                Cart Is Empty
+                            </div>
+                        </th:block>
+                        <th:block th:if="${cartItems != null and not #lists.isEmpty(cartItems)}">
+                            <div class="row gy-3 mb-4"  th:each="item: ${cartItems}">
                                 <div class="col-lg-5">
                                     <div class="me-lg-5">
                                         <div class="d-flex">

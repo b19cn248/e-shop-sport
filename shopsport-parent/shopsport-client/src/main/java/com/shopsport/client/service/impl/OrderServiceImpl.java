@@ -52,4 +52,15 @@ public class OrderServiceImpl implements OrderService {
     cartItemRepository.removeCustomerCart(customer.getId());
 
   }
+
+  @Override
+  public List<Order> getOrder() {
+    log.info("(getOrder)");
+
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    Customer customer = customerRepository.findByEmail(username).orElseThrow();
+
+    return repository.list(customer.getId());
+  }
 }
