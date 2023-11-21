@@ -34,6 +34,7 @@ public class ProductController {
   @GetMapping("/detail/{id}")
   public String viewDetailProduct(Model model, @PathVariable Integer id) {
     model.addAttribute("product", productService.get(id));
+    model.addAttribute("numberOfProducts", cartItemService.getNumberOfProduct());
     return "detail_product";
   }
 }

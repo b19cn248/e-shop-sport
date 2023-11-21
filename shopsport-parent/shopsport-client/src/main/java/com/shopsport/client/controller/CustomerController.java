@@ -1,5 +1,6 @@
 package com.shopsport.client.controller;
 
+import com.shopsport.client.service.CartItemService;
 import com.shopsport.client.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class CustomerController {
 
   private final OrderService orderService;
+  private final CartItemService cartItemService;
 
   @GetMapping("/orders/create")
   public String viewProfile() {
@@ -25,6 +27,7 @@ public class CustomerController {
   public String view(Model model) {
     log.info("(view)");
     model.addAttribute("orders", orderService.getOrder());
+    model.addAttribute("numberOfProducts", cartItemService.getNumberOfProduct());
     return "user_account";
   }
 }

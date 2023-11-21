@@ -18,14 +18,20 @@
                 <!-- Center elements -->
                 <div class="order-lg-last col-lg-5 col-sm-8 col-8">
                     <div class="d-flex float-end">
+                        <a th:href="@{/customers}"
+                           class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center">
+                            <i class="fas fa-user-alt m-1 me-md-2"></i>
+                            <p class="d-none d-md-block mb-0" sec:authentication="principal.fullname"></p>
+                        </a>
                         <a href="https://github.com/mdbootstrap/bootstrap-material-design"
                            class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i
-                                class="fas fa-user-alt m-1 me-md-2"></i>
-                            <p class="d-none d-md-block mb-0">Sign in</p></a>
-                        <a href="https://github.com/mdbootstrap/bootstrap-material-design"
-                           class="border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i
-                                class="fas fa-shopping-cart m-1 me-md-2"></i>
-                            <p class="d-none d-md-block mb-0">My cart</p></a>
+                                class="fas fa-heart m-1 me-md-2"></i>
+                            <p class="d-none d-md-block mb-0">Wishlist</p></a>
+                        <a th:href="@{/carts}"
+                           class="border rounded py-1 px-3 nav-link d-flex align-items-center">
+                            <i class="fas fa-shopping-cart m-1 me-md-2"></i>
+                            <p class="d-none d-md-block mb-0" id="cart-count">[[${numberOfProducts}]]</p>
+                        </a>
                     </div>
                 </div>
                 <!-- Center elements -->
@@ -53,7 +59,7 @@
             <!-- Breadcrumb -->
             <nav class="d-flex">
                 <h6 class="mb-0">
-                    <a href="" class="text-white-50">Home</a>
+                    <a th:href="@{/}" class="text-white-50">Home</a>
                     <span class="text-white-50 mx-2"> > </span>
                     <a href="" class="text-white-50">Library</a>
                     <span class="text-white-50 mx-2"> > </span>
@@ -154,7 +160,7 @@
                         </div>
                     </div>
                     <a href="#" class="btn btn-warning shadow-0"> Buy now </a>
-                    <a th:href="@{/carts}" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i>
+                    <a th:href="@{'/carts/add/' + ${product.id}}" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i>
                         Add to cart </a>
                     <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i
                             class="me-1 fa fa-heart fa-lg"></i> Save </a>
