@@ -15,9 +15,16 @@ import java.util.List;
 public class PromotionServiceImpl implements PromotionService {
 
   private final PromotionRepository repository;
+
   @Override
   public List<Promotion> listAll() {
     log.info("(list All Promotions)");
     return repository.findAll();
+  }
+
+  @Override
+  public void save(Promotion promotion) {
+    log.info("(save) promotion:{}", promotion);
+    repository.save(promotion);
   }
 }

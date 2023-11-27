@@ -35,13 +35,17 @@ public class ClientConfiguration {
         OrderRepository orderRepository,
         CustomerRepository customerRepository,
         CartItemRepository cartItemRepository,
-        OrderDetailRepository orderDetailRepository
+        OrderDetailRepository orderDetailRepository,
+        PromotionRepository promotionRepository,
+        OrderPromotionRepository orderPromotionRepository
   ) {
     return new OrderServiceImpl(
           orderRepository,
           customerRepository,
           cartItemRepository,
-          orderDetailRepository
+          orderDetailRepository,
+          promotionRepository,
+          orderPromotionRepository
     );
   }
 }

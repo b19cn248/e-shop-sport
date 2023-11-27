@@ -1,20 +1,14 @@
 package com.shopsport.client.service.impl;
 
-import com.shopsport.client.repository.CartItemRepository;
-import com.shopsport.client.repository.CustomerRepository;
-import com.shopsport.client.repository.OrderDetailRepository;
-import com.shopsport.client.repository.OrderRepository;
+import com.shopsport.client.repository.*;
 import com.shopsport.client.service.OrderService;
-import com.shopsport.common.entity.CartItem;
-import com.shopsport.common.entity.Customer;
-import com.shopsport.common.entity.Order;
-import com.shopsport.common.entity.OrderDetail;
+import com.shopsport.client.utils.DateUtils;
+import com.shopsport.common.entity.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +20,8 @@ public class OrderServiceImpl implements OrderService {
   private final CustomerRepository customerRepository;
   private final CartItemRepository cartItemRepository;
   private final OrderDetailRepository orderDetailRepository;
+  private final PromotionRepository promotionRepository;
+  private final OrderPromotionRepository orderPromotionRepository;
 
   @Override
   @Transactional
@@ -39,15 +35,20 @@ public class OrderServiceImpl implements OrderService {
     List<CartItem> cartItems = cartItemRepository.listAll(customer.getId());
 
 
-    List<OrderDetail> orderDetails = new ArrayList<>();
+    List<OrderDetail> orderDetails = cartItems.stream()
+          .map(item -> new OrderDetail(item.getQuantity(), item.getProduct().getImportPrice(),
+                item.getProduct().getExportPrice(), order, item.getProduct()))
+          .toList();
 
-    for (CartItem item : cartItems) {
-      orderDetails.add(new OrderDetail(item.getQuantity(), item.getProduct().getImportPrice(), item.getProduct().getExportPrice(),
-            order, item.getProduct()));
-    }
+    List<Promotion> promotions = promotionRepository.findActivePromotions(DateUtils.getDateNow());
+
+    List<OrderPromotion> orderPromotions = promotions.stream()
+          .map(promotion -> new OrderPromotion(order.getTotalMoney(), order, promotion))
+          .toList();
 
     repository.save(order);
     orderDetailRepository.saveAll(orderDetails);
+    orderPromotionRepository.saveAll(orderPromotions);
 
     cartItemRepository.removeCustomerCart(customer.getId());
 

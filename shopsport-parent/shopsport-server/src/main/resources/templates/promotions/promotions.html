@@ -7,8 +7,8 @@
     <div>
         <h2>Manage Orders</h2>
 
-        <a th:href="@{/orders/new}" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>
-        <a th:href="@{/orders/export/csv}" class="fas fa-file-csv fa-2x icon-dark mr-2"></a>
+        <a th:href="@{/promotions/new}" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>
+        <a th:href="@{/promotions/export/csv}" class="fas fa-file-csv fa-2x icon-dark mr-2"></a>
     </div>
 
     <div th:replace="~{fragments :: search_form_and_message('/orders/page/1')}" />
@@ -17,28 +17,20 @@
         <table class="table table-bordered table-striped table-hover table-responsive-xl">
             <thead class="thead-dark">
             <tr>
-                <th>Code</th>
-                <th>Customer</th>
-                <th>Total Money</th>
-                <th>Money Paid</th>
+                <th>ID</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Discount Percent</th>
                 <th>Money Deducted</th>
-                <th>Status</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="order : ${orders}">
-                <td>[[${order.code}]]</td>
-                <td>[[${order.customer.fullName}]]</td>
-                <td>[[${order.totalMoney}]]</td>
-                <td>[[${order.moneyPaid}]]</td>
-                <td>[[${order.totalMoney - order.moneyPaid}]]</td>
-                <td th:text="${order.status == 0 ? 'PROCESSING' :
-                     (order.status == 1 ? 'ACCEPTED' :
-                     (order.status == 2 ? 'COMPLETED' :
-                     (order.status == 3 ? 'CANCELLED' : 'UNKNOWN STATUS')))}">
-                </td>
-
-
+            <tr th:each="promotion : ${promotions}">
+                <td>[[${promotion.id}]]</td>
+                <td>[[${promotion.startTime}]]</td>
+                <td>[[${promotion.endTime}]]</td>
+                <td>[[${promotion.discountPercent}]]</td>
+                <td>[[${promotion.moneyDeducted}]]</td>
             </tr>
             </tbody>
         </table>
