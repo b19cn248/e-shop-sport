@@ -6,13 +6,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/carts")
 public class CartController {
   private final CartItemService cartItemService;
 
-  @GetMapping("/carts")
+  @GetMapping
   public String cartView(Model model) {
     model.addAttribute("cartItems", cartItemService.listAll());
     model.addAttribute("totalMoney", cartItemService.getTotalMoney());
@@ -20,7 +22,7 @@ public class CartController {
     return "cart";
   }
 
-  @GetMapping("/carts/add/{id}")
+  @GetMapping("/add/{id}")
   public String addToCart(@PathVariable Integer id) {
     cartItemService.addToCart(id);
     return "redirect:/carts";

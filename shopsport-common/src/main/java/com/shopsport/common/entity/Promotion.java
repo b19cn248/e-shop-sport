@@ -16,6 +16,5 @@ public class Promotion extends BaseEntityWithUpdater {
   private String startTime;
   private String endTime;
   private int discountPercent;
-
   private double moneyDeducted;
 }
