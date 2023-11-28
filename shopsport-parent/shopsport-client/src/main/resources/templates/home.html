@@ -119,10 +119,8 @@
                                     <div th:each="brand : ${brands}">
                                         <!-- Checked checkbox -->
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                   id="flexCheckChecked1" checked/>
-                                            <label class="form-check-label"
-                                                   for="flexCheckChecked1">[[${brand.name}]]</label>
+                                            <input class="form-check-input brand-checkbox" type="checkbox" th:value="${brand.id}"/>
+                                            <label class="form-check-label">[[${brand.name}]]</label>
                                             <span class="badge badge-secondary float-end">120</span>
                                         </div>
                                     </div>
@@ -303,7 +301,7 @@
                 <div class="row">
 
 
-                    <div th:each="product : ${products}" class="col-lg-4 col-md-6 col-sm-6 d-flex">
+                    <div th:each="product : ${products}" class="col-lg-4 col-md-6 col-sm-6 d-flex product-item">
                         <div class="card w-100 my-2 shadow-2-strong">
                             <img th:src="@{${product.mainImagePath}}"
                                  class="card-img-top"/>
@@ -426,6 +424,54 @@
                 console.log(response)
             })
         });
+
+
+        $('.brand-checkbox').on('change', function() {
+            // Your existing code to get selected brands...
+            var selectedBrands = [];
+            $('.brand-checkbox:checked').each(function() {
+                selectedBrands.push($(this).val());
+            });
+
+            // AJAX call to your API
+            $.ajax({
+                url: '/products/find-by-brand',
+                type: 'GET',
+                data: $.param({ 'brandIDs': selectedBrands }, true),
+                success: function(products) {
+                    // Clear the existing product container
+                    listProduct = document.getElementsByClassName('product-item')
+
+                    // Iterate through the products and append them to the container
+                    $.each(products, function(index, product) {
+                        listProduct[index].remove();
+                        var productHtml = '<div class="col-lg-4 col-md-6 col-sm-6 d-flex" id="table-product">';
+                        productHtml += '<div class="card w-100 my-2 shadow-2-strong">';
+                        productHtml += '<img src="' + product.mainImagePath + '" class="card-img-top"/>';
+                        productHtml += '<div class="card-body d-flex flex-column">';
+                        productHtml += '<div class="d-flex flex-row">';
+                        productHtml += '<h5 class="mb-1 me-1">$ ' + (product.exportPrice * (100 - product.disCount) / 100) + '</h5>';
+                        productHtml += '<span class="text-danger"><s>$ ' + product.exportPrice + '</s></span>';
+                        productHtml += '</div>';
+                        productHtml += '<p class="card-text">' + product.name + '</p>';
+                        productHtml += '<div class="card-footer d-flex align-items-end justify-content-between pt-3 px-0 pb-0 mt-auto">';
+                        productHtml += '<a href="/add-to-cart/' + product.id + '" class="btn btn-primary shadow-0 me-1 add-to-cart">Add to cart</a>';
+                        productHtml += '<a href="#!" class="btn btn-light border icon-hover px-2 pt-2">';
+                        productHtml += '<i class="fas fa-heart fa-lg text-secondary px-1"></i></a>';
+                        productHtml += '<a href="/detail/' + product.id + '" class="btn btn-primary shadow-0 me-1 px-2 pt-2">Detail</a>';
+                        productHtml += '</div></div></div></div>';
+
+                        // Append the product HTML to the container
+                        $('#product-container').append(productHtml);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX error: " + status + ', error: ' + error);
+                }
+            });
+        });
+
+
 
 
     })

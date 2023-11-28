@@ -27,4 +27,10 @@ public class PromotionServiceImpl implements PromotionService {
     log.info("(save) promotion:{}", promotion);
     repository.save(promotion);
   }
+
+  @Override
+  public Promotion detail(Integer id) {
+    log.info("(detail) id:{}", id);
+    return repository.findById(id).orElseThrow();
+  }
 }

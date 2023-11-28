@@ -21,7 +21,7 @@
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Discount Percent</th>
-                <th>Money Deducted</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -30,7 +30,11 @@
                 <td>[[${promotion.startTime}]]</td>
                 <td>[[${promotion.endTime}]]</td>
                 <td>[[${promotion.discountPercent}]]</td>
-                <td>[[${promotion.moneyDeducted}]]</td>
+                <td>
+                    <div th:replace="~{fragments :: edit('promotion', '/promotions/edit/' + ${promotion.id})}" />
+                    &nbsp;
+                    <div th:replace="~{fragments :: delete('promotion', ${promotion.id}, '/promotions/delete/' + ${promotion.id}, true)}" />
+                </td>
             </tr>
             </tbody>
         </table>

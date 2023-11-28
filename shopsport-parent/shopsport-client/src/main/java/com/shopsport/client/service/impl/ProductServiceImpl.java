@@ -1,5 +1,6 @@
 package com.shopsport.client.service.impl;
 
+import com.shopsport.client.dto.ProductResponse;
 import com.shopsport.client.repository.ProductRepository;
 import com.shopsport.client.service.ProductService;
 import com.shopsport.common.entity.Product;
@@ -24,5 +25,11 @@ public class ProductServiceImpl implements ProductService {
   public Product get(Integer id) {
     log.info("(get) id:{}", id);
     return repository.findById(id).orElseThrow();
+  }
+
+  @Override
+  public List<ProductResponse> findByBrandID(List<Integer> brandIDs) {
+    log.info("(findByBrandID) brandIDs:{}", brandIDs);
+    return repository.findProductByBrand(brandIDs);
   }
 }
