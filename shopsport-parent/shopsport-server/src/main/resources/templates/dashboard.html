@@ -11,38 +11,10 @@
 </head>
 
 <body>
-<!-- Navbar -->
-<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
-<!--    <div class="container">-->
-<!--        <a class="navbar-brand" href="#">Quản lý</a>-->
-<!--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"-->
-<!--                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--            <span class="navbar-toggler-icon"></span>-->
-<!--        </button>-->
-<!--        <div class="collapse navbar-collapse" id="navbarNav">-->
-<!--            <ul class="navbar-nav">-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" aria-current="page" href="index.html">Quản lý sản phẩm</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="ncc.html">Quản lý kho</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link active" href="dashboard.html">Xem báo cáo thống kê</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#">Nguyễn Minh Hiếu</a>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</nav>-->
 
 <div th:replace="~{navigation :: menu}"></div>
 
-<!-- Kết thúc Navbar -->
 
-<!-- Phần nội dung chính -->
 <div class="container mt-5">
     <h1 class="text-center mb-4">Báo cáo thống kê</h1>
 
@@ -65,59 +37,99 @@
     </div>
 </div>
 
-<!-- ... phần footer và scripts như trước ... -->
 
 <script>
-    var ctx1 = document.getElementById('revenueChart').getContext('2d');
-    new Chart(ctx1, {
-        type: 'bar',
-        data: {
-            labels: ['Tháng 1', 'Tháng 2', 'Tháng 3'],
-            datasets: [{
-                label: 'Doanh thu',
-                data: [150, 200, 175],
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-            }]
-        }
-    });
 
-    var ctx2 = document.getElementById('productSalesChart').getContext('2d');
-    new Chart(ctx2, {
-        type: 'pie',
-        data: {
-            labels: ['Giày', 'Quần áo Thể thao', 'Phụ kiện'],
-            datasets: [{
-                data: [45, 25, 30],
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-            }]
+    function generateColors(count) {
+        var colors = [];
+        var hueStep = 360 / count;
+        for (var i = 0; i < count; i++) {
+            var hue = i * hueStep;
+            colors.push(`hsl(${hue}, 100%, 50%)`);
         }
-    });
+        return colors;
+    }
 
-    var ctx3 = document.getElementById('categorySalesChart').getContext('2d');
-    new Chart(ctx3, {
-        type: 'doughnut',
-        data: {
-            labels: ['Thời trang nam', 'Thời trang nữ', 'Phụ kiện'],
-            datasets: [{
-                data: [50, 35, 15],
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-            }]
-        }
-    });
+    function loadAndDisplayChartData() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'http://localhost:8888/ShopSportServer/products/statics');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var statisticsData = JSON.parse(xhr.responseText);
+                var brandNames = statisticsData.map(statistic => statistic.brandName);
+                var quantities = statisticsData.map(statistic => statistic.quantity);
+                var backgroundColors = generateColors(brandNames.length); // Sinh màu
 
-    var ctx4 = document.getElementById('trafficSourceChart').getContext('2d');
-    new Chart(ctx4, {
-        type: 'line',
-        data: {
-            labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4'],
-            datasets: [{
-                label: 'Lượng truy cập',
-                data: [3000, 2500, 3500, 4000],
-                borderColor: '#4BC0C0',
-                fill: false
-            }]
-        }
-    });
+                var ctx1 = document.getElementById('revenueChart').getContext('2d');
+                new Chart(ctx1, {
+                    type: 'bar',
+                    data: {
+                        labels: brandNames,
+                        datasets: [{
+                            label: 'Doanh số bán hàng theo thương hiệu',
+                            data: quantities,
+                            backgroundColor: backgroundColors // Sử dụng mảng màu đã sinh
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error('Lỗi khi tải dữ liệu: ' + xhr.status);
+            }
+        };
+        xhr.onerror = function() {
+            console.error('Lỗi kết nối đến API');
+        };
+        xhr.send();
+    }
+
+    document.addEventListener('DOMContentLoaded', loadAndDisplayChartData);
+
+
+
+    // var ctx2 = document.getElementById('productSalesChart').getContext('2d');
+    // new Chart(ctx2, {
+    //     type: 'pie',
+    //     data: {
+    //         labels: ['Giày', 'Quần áo Thể thao', 'Phụ kiện'],
+    //         datasets: [{
+    //             data: [45, 25, 30],
+    //             backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+    //         }]
+    //     }
+    // });
+    //
+    // var ctx3 = document.getElementById('categorySalesChart').getContext('2d');
+    // new Chart(ctx3, {
+    //     type: 'doughnut',
+    //     data: {
+    //         labels: ['Thời trang nam', 'Thời trang nữ', 'Phụ kiện'],
+    //         datasets: [{
+    //             data: [50, 35, 15],
+    //             backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+    //         }]
+    //     }
+    // });
+    //
+    // var ctx4 = document.getElementById('trafficSourceChart').getContext('2d');
+    // new Chart(ctx4, {
+    //     type: 'line',
+    //     data: {
+    //         labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4'],
+    //         datasets: [{
+    //             label: 'Lượng truy cập',
+    //             data: [3000, 2500, 3500, 4000],
+    //             borderColor: '#4BC0C0',
+    //             fill: false
+    //         }]
+    //     }
+    // });
 </script>
 </body>
 

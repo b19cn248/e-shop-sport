@@ -1,6 +1,7 @@
 package com.shopsport.server.service.impl;
 
 import com.shopsport.common.entity.Product;
+import com.shopsport.server.dto.ProductResponse;
 import com.shopsport.server.exception.product.ProductNotFoundException;
 import com.shopsport.server.repository.ProductRepository;
 import com.shopsport.server.service.ProductService;
@@ -65,6 +66,12 @@ public class ProductServiceImpl implements ProductService {
     } catch (NoSuchElementException ex) {
       throw new ProductNotFoundException("Could not find product with id " + id);
     }
+  }
+
+  @Override
+  public List<ProductResponse> statisticsByBrand() {
+    log.info("(statisticsByBrand)");
+    return repository.statisticsByBrand();
   }
 
 }
