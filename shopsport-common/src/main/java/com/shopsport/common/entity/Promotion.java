@@ -13,6 +13,7 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 public class Promotion extends BaseEntityWithUpdater {
 
+  private String name;
   private String startTime;
   private String endTime;
   private Double discountPercent;

@@ -30,7 +30,7 @@ public class OrderServiceImpl implements OrderService {
 
     Customer customer = customerRepository.findByEmail(username).orElseThrow();
 
-    Order order = new Order(UUID.randomUUID().toString(), cartItemRepository.getTotalMoney(customer.getId()), null, 0, customer);
+    Order order = new Order(UUID.randomUUID().toString(), cartItemRepository.getTotalMoney(customer.getId()), 0.0, 0, customer);
 
     List<CartItem> cartItems = cartItemRepository.listAll(customer.getId());
 
@@ -43,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
     List<Promotion> promotions = promotionRepository.findActivePromotions(DateUtils.getDateNow());
 
     List<OrderPromotion> orderPromotions = promotions.stream()
-          .map(promotion -> new OrderPromotion(order.getTotalMoney(), order, promotion))
+          .map(promotion -> new OrderPromotion(order.getTotalMoney() * promotion.getDiscountPercent() / 100, order, promotion))
           .toList();
 
     repository.save(order);

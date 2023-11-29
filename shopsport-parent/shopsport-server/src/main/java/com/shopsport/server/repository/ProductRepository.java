@@ -18,4 +18,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
         "GROUP BY b.name")
   List<ProductResponse> statisticsByBrand();
 
+
+  @Query(" SELECT sum(od.quantity * (od.exportPrice * (1 - p.disCount / 100) - od.importPrice)) " +
+        " FROM OrderDetail od join Product p on od.product.id = p.id" +
+        " WHERE od.lastUpdatedAt BETWEEN :from AND :to")
+  Double totalMoney(Long from, Long to);
 }
