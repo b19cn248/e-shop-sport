@@ -21,8 +21,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public ProductService productService(ProductRepository repository) {
-    return new ProductServiceImpl(repository);
+  public ProductService productService(ProductRepository repository, PromotionRepository promotionRepository) {
+    return new ProductServiceImpl(repository, promotionRepository);
   }
 
   @Bean

@@ -59,10 +59,6 @@ public class CartItemServiceImpl implements CartItemService {
 
     List<Product> products = cartItemRepository.findByCustomer(customer.getId());
 
-    System.out.println(products.size());
-
-    System.out.println(products);
-
     return products;
 
   }

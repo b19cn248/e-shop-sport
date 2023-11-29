@@ -2,21 +2,24 @@ package com.shopsport.server.service.impl;
 
 import com.shopsport.common.entity.Product;
 import com.shopsport.server.dto.ProductResponse;
+import com.shopsport.server.dto.RevenueStatisticsByMonth;
 import com.shopsport.server.exception.product.ProductNotFoundException;
 import com.shopsport.server.repository.ProductRepository;
+import com.shopsport.server.repository.PromotionRepository;
 import com.shopsport.server.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
   private final ProductRepository repository;
+  private final PromotionRepository promotionRepository;
 
   @Override
   public List<Product> list() {
@@ -73,5 +76,36 @@ public class ProductServiceImpl implements ProductService {
     log.info("(statisticsByBrand)");
     return repository.statisticsByBrand();
   }
+
+  @Override
+  public List<RevenueStatisticsByMonth> statisticsByMonth() {
+    log.info("(statisticsByMonth)");
+
+    List<RevenueStatisticsByMonth> revenueStatisticsByMonths = new ArrayList<>();
+
+    revenueStatisticsByMonths.add(new RevenueStatisticsByMonth(9, getTotalMoneyOfMonth(9)));
+    revenueStatisticsByMonths.add(new RevenueStatisticsByMonth(10, getTotalMoneyOfMonth(10)));
+    revenueStatisticsByMonths.add(new RevenueStatisticsByMonth(11, getTotalMoneyOfMonth(11)));
+
+
+    return revenueStatisticsByMonths;
+  }
+
+
+  private Double getTotalMoneyOfMonth(Integer month) {
+    int year = LocalDate.now().getYear();
+
+    LocalDate startOfMonth = LocalDate.of(year, month, 1);
+    LocalDate endOfMonth = startOfMonth.withDayOfMonth(startOfMonth.lengthOfMonth());
+
+    Date startDate = Date.from(startOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    Date endDate = Date.from(endOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+    Long startTimestamp = startDate.getTime();
+    Long endTimestamp = endDate.getTime();
+
+    return repository.totalMoney(startTimestamp, endTimestamp) - promotionRepository.getMoneyDeductedOfPromotion(startTimestamp, endTimestamp);
+  }
+
 
 }

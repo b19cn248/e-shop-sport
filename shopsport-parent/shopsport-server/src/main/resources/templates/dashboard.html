@@ -23,7 +23,7 @@
             <canvas id="revenueChart"></canvas>
         </div>
         <div class="col-md-6">
-            <canvas id="productSalesChart"></canvas>
+            <canvas id="productChart"></canvas>
         </div>
     </div>
 
@@ -89,7 +89,49 @@
         xhr.send();
     }
 
+    function loadAndDisplayProductData() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'http://localhost:8888/ShopSportServer/products/top');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var statisticsData = JSON.parse(xhr.responseText);
+                var brandNames = statisticsData.map(statistic => statistic.name);
+                var quantities = statisticsData.map(statistic => statistic.quantity);
+                var backgroundColors = generateColors(brandNames.length); // Sinh màu
+
+                var ctx1 = document.getElementById('productChart').getContext('2d');
+                new Chart(ctx1, {
+                    type: 'bar',
+                    data: {
+                        labels: brandNames,
+                        datasets: [{
+                            label: 'Top 5 những sản phẩm bán chạy ',
+                            data: quantities,
+                            backgroundColor: backgroundColors // Sử dụng mảng màu đã sinh
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error('Lỗi khi tải dữ liệu: ' + xhr.status);
+            }
+        };
+        xhr.onerror = function() {
+            console.error('Lỗi kết nối đến API');
+        };
+        xhr.send();
+    }
+
+
+
     document.addEventListener('DOMContentLoaded', loadAndDisplayChartData);
+    document.addEventListener('DOMContentLoaded', loadAndDisplayProductData)
 
 
 
@@ -130,6 +172,53 @@
     //         }]
     //     }
     // });
+
+    function loadAndDisplayRevenueData() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'http://localhost:8888/ShopSportServer/products/revenue');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var statisticsData = JSON.parse(xhr.responseText);
+                var brandNames = statisticsData.map(statistic => statistic.month);
+                var quantities = statisticsData.map(statistic => statistic.totalMoney);
+                var backgroundColors = generateColors(brandNames.length); // Sinh màu
+
+                var ctx1 = document.getElementById('trafficSourceChart').getContext('2d');
+                new Chart(ctx1, {
+                    type: 'line',
+                    data: {
+                        labels: brandNames,
+                        datasets: [{
+                            // label: 'Top 5 những sản phẩm bán chạy ',
+                            // data: quantities,
+                            // backgroundColor: backgroundColors // Sử dụng mảng màu đã sinh
+                            label: 'Doanh số',
+                            data: quantities,
+                            borderColor: '#4BC0C0',
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error('Lỗi khi tải dữ liệu: ' + xhr.status);
+            }
+        };
+        xhr.onerror = function() {
+            console.error('Lỗi kết nối đến API');
+        };
+        xhr.send();
+    }
+
+
+
+    document.addEventListener('DOMContentLoaded', loadAndDisplayRevenueData);
 </script>
 </body>
 
